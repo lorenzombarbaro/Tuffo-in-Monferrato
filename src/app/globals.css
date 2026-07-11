@@ -24,3 +24,45 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.hero-perspective {
+  perspective: 1200px;
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1.1) rotateX(0deg);
+  }
+  100% {
+    transform: scale(1.25) rotateX(2deg);
+  }
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform-origin: center 70%;
+  animation: kenburns 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.font-hero {
+  font-family: var(--font-fraunces), serif;
+  letter-spacing: 0.03em;
+}
+
+.shadow-f {
+  position: relative;
+  display: inline-block;
+}
+
+.shadow-f::after {
+  content: "f";
+  position: absolute;
+  left: 0.12em;
+  top: 0.06em;
+  color: rgba(255, 255, 255, 0.38);
+  z-index: -1;
+}
