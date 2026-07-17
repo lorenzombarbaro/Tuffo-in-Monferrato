@@ -21,8 +21,6 @@ export default function PoiEditorModule() {
   const [message, setMessage] = useState(null)
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
 
   const miniMapContainer = useRef(null)
   const miniMapRef = useRef(null)
