@@ -4,22 +4,47 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { House, Bike, Binoculars, Building2, ChevronDown, Search } from 'lucide-react'
+import { House, ChevronDown, Search } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
 
-// Icona custom: castello fiabesco con tetti a punta (tre torri, quella centrale piu alta)
-// — silhouette leggibile anche a dimensioni piccole, disegno originale
-function TowerIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+// Bandiera a punta (pennant) — disegno originale
+function FlagIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
          strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 20V10L5 6L7 10V20" />
-      <path d="M17 20V10L19 6L21 10V20" />
-      <path d="M9 20V7L12 2L15 7V20" />
-      <path d="M3 20H21" />
-      <path d="M11 20v-3a1 1 0 0 1 2 0v3" />
+      <path d="M6 22V3" />
+      <path d="M6 4L17.5 8.5L6 13Z" />
+    </svg>
+  )
+}
+
+// Ruota panoramica — disegno originale
+function FerrisWheelIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
+         strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="10" r="7" />
+      <path d="M12 3V17" />
+      <path d="M5 10H19" />
+      <path d="M9 16.5L6.5 22" />
+      <path d="M15 16.5L17.5 22" />
+      <path d="M5 22H19" />
+    </svg>
+  )
+}
+
+// Binocolo semplificato — due lenti e un ponte, senza dettagli extra
+function SimpleBinocularsIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
+         strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="7" cy="15" r="4" />
+      <circle cx="17" cy="15" r="4" />
+      <path d="M7 11V8a2 2 0 0 1 2-2h1" />
+      <path d="M17 11V8a2 2 0 0 0-2-2h-1" />
+      <path d="M11 15h2" />
     </svg>
   )
 }
@@ -65,15 +90,15 @@ const CATEGORY_LABEL = {
 }
 
 const CATEGORY_ICON = {
-  borgo: TowerIcon,
-  cultura: Bike,
-  panorama: Binoculars,
+  borgo: FlagIcon,
+  cultura: FerrisWheelIcon,
+  panorama: SimpleBinocularsIcon,
 }
 
 const SHOW_BUSINESS_FILTER = false
 
 function buildPinElement(category) {
-  const Icon = CATEGORY_ICON[category] || TowerIcon
+  const Icon = CATEGORY_ICON[category] || FlagIcon
   const iconSvg = renderToStaticMarkup(<Icon size={17} color="#ffffff" strokeWidth={2.2} />)
   const el = document.createElement('div')
   el.style.cursor = 'pointer'
@@ -177,6 +202,8 @@ export default function MapMonferrato() {
     pois.filter((p) => activeCats.has(p.category_id)).forEach((poi) => {
       const el = buildPinElement(poi.category_id)
 
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
+
       const popupHtml = `
         <div style="width:220px;font-family:sans-serif;">
           <div style="height:110px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
@@ -185,7 +212,12 @@ export default function MapMonferrato() {
           <div style="padding:10px 12px;">
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:${ACCENT};font-weight:600;margin-bottom:2px;">${CATEGORY_LABEL[poi.category_id] || ''}</div>
             <div style="font-weight:700;font-size:15px;margin-bottom:4px;">${poi.name}</div>
-            <div style="font-size:12.5px;color:#555;line-height:1.4;">${poi.short_desc || ''}</div>
+            <div style="font-size:12.5px;color:#555;line-height:1.4;margin-bottom:10px;">${poi.short_desc || ''}</div>
+            <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer"
+               style="display:block;text-align:center;background:${ACCENT};color:white;font-size:12.5px;
+                      font-weight:600;padding:8px;border-radius:6px;text-decoration:none;">
+              Portami qui →
+            </a>
           </div>
         </div>
       `
@@ -320,7 +352,6 @@ export default function MapMonferrato() {
 
             {SHOW_BUSINESS_FILTER && (
               <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">
-                <Building2 size={16} strokeWidth={2} />
                 Aziende
               </button>
             )}
@@ -341,7 +372,7 @@ export default function MapMonferrato() {
               {searchOpen && searchResults.length > 0 && (
                 <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden">
                   {searchResults.map((poi) => {
-                    const Icon = CATEGORY_ICON[poi.category_id] || TowerIcon
+                    const Icon = CATEGORY_ICON[poi.category_id] || FlagIcon
                     return (
                       <button
                         key={poi.id}

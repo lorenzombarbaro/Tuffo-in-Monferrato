@@ -9,7 +9,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata = {
-  title: "Tufo in Monferrato",
+  title: "Tuffo in Monferrato",
   description: "Scopri borghi, cantine e chicche nascoste tra le colline del Monferrato",
 };
 

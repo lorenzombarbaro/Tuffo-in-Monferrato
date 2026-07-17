@@ -19,6 +19,10 @@ export default function PoiEditorModule() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState(null)
+  const [categoryFilter, setCategoryFilter] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const miniMapContainer = useRef(null)
   const miniMapRef = useRef(null)
@@ -121,11 +125,43 @@ export default function PoiEditorModule() {
       summary={`${pois.length} POI nel database — clicca per modificarne uno`}
     >
       <div className="grid md:grid-cols-[220px_1fr] gap-6">
-        <div className="max-h-[420px] overflow-y-auto md:border-r border-black/5 pr-3">
-          {Object.entries(CATEGORY_LABEL).map(([cat, label]) => (
+        <div className="max-h-[500px] overflow-y-auto md:border-r border-black/5 pr-3">
+
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cerca un luogo..."
+            className="w-full text-sm border border-black/10 rounded-full px-3 py-1.5 outline-none focus:border-[#F2760E] mb-3"
+          />
+
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {['all', ...Object.keys(CATEGORY_LABEL)].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                className="px-2.5 py-1 rounded-full text-xs font-medium transition-colors"
+                style={{
+                  background: categoryFilter === cat ? '#F2760E18' : 'transparent',
+                  color: categoryFilter === cat ? '#F2760E' : '#8a8a8a',
+                  border: '1px solid',
+                  borderColor: categoryFilter === cat ? '#F2760E40' : '#00000014',
+                }}
+              >
+                {cat === 'all' ? 'Tutti' : CATEGORY_LABEL[cat]}
+              </button>
+            ))}
+          </div>
+
+          {Object.entries(CATEGORY_LABEL)
+            .filter(([cat]) => categoryFilter === 'all' || categoryFilter === cat)
+            .map(([cat, label]) => (
             <div key={cat} className="mb-3">
               <div className="text-xs uppercase tracking-wide text-neutral-400 font-medium mb-1">{label}</div>
-              {pois.filter((p) => p.category_id === cat).map((p) => (
+              {pois
+                .filter((p) => p.category_id === cat)
+                .filter((p) => p.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+                .map((p) => (
                 <button
                   key={p.id}
                   onClick={() => selectPoi(p)}
