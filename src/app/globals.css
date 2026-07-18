@@ -69,3 +69,7 @@ body {
 html, body {
   overscroll-behavior-y: none;
 }
+
+html, body {
+  background-color: #14110f;
+}

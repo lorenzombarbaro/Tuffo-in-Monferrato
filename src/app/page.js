@@ -32,7 +32,7 @@ export default function Home() {
         </a>
       </section>
 
-      <section id="mappa" className="relative w-full" style={{ height: 'var(--app-height, 100dvh)' }}>
+      <section id="mappa" className="relative w-full bg-[#14110f]" style={{ height: 'var(--app-height, 100dvh)' }}>
         <MapMonferrato />
       </section>
     </main>
