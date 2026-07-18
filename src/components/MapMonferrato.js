@@ -198,6 +198,7 @@ export default function MapMonferrato() {
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
+  const [mapReady, setMapReady] = useState(false)
 
   useEffect(() => {
     async function loadPois() {
@@ -231,9 +232,8 @@ export default function MapMonferrato() {
     mapRef.current = map
     map.on('load', () => {
       applyCanvasFilter(layer)
-      renderMarkers()
-      // forza un resize/repaint appena la mappa e' effettivamente pronta
       setTimeout(() => map.resize(), 50)
+      setMapReady(true)
     })
 
     const resizeObserver = new ResizeObserver(() => map.resize())
@@ -246,7 +246,6 @@ export default function MapMonferrato() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             map.resize()
-            map.triggerRepaint()
           }
         })
       },
@@ -330,8 +329,9 @@ export default function MapMonferrato() {
   }
 
   useEffect(() => {
+    if (!mapReady) return
     renderMarkers()
-  }, [activeCats, pois])
+  }, [activeCats, pois, mapReady])
 
   function switchLayer(key) {
     setLayer(key)
