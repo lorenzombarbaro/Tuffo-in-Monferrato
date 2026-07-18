@@ -4,44 +4,34 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { House, ChevronDown, Search } from 'lucide-react'
+import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
 
-function FlagIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+// Torre merlata — ispirata al riferimento del cliente
+function TowerIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
          strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 22V3" />
-      <path d="M6 4L17.5 8.5L6 13Z" />
-    </svg>
-  )
-}
-
-function FerrisWheelIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
-         strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="10" r="7" />
-      <path d="M12 3V17" />
-      <path d="M5 10H19" />
-      <path d="M9 16.5L6.5 22" />
-      <path d="M15 16.5L17.5 22" />
+      <path d="M5 22V9" />
+      <path d="M19 22V9" />
       <path d="M5 22H19" />
+      <path d="M5 9V6H8V4H10V6H14V4H16V6H19V9" />
+      <path d="M10 22v-4a2 2 0 0 1 4 0v4" />
     </svg>
   )
 }
 
-function SimpleBinocularsIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+// Biglietto d'ingresso — ispirato al riferimento del cliente
+function TicketIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
          strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="7" cy="15" r="4" />
-      <circle cx="17" cy="15" r="4" />
-      <path d="M7 11V8a2 2 0 0 1 2-2h1" />
-      <path d="M17 11V8a2 2 0 0 0-2-2h-1" />
-      <path d="M11 15h2" />
+      <rect x="3" y="6" width="18" height="12" rx="2.5" />
+      <path d="M12 6v2.5" />
+      <path d="M12 10.75v2.5" />
+      <path d="M12 15.5V18" />
     </svg>
   )
 }
@@ -87,15 +77,15 @@ const CATEGORY_LABEL = {
 }
 
 const CATEGORY_ICON = {
-  borgo: FlagIcon,
-  cultura: FerrisWheelIcon,
-  panorama: SimpleBinocularsIcon,
+  borgo: TowerIcon,
+  cultura: TicketIcon,
+  panorama: Binoculars,
 }
 
 const SHOW_BUSINESS_FILTER = false
 
 function buildPinElement(category) {
-  const Icon = CATEGORY_ICON[category] || FlagIcon
+  const Icon = CATEGORY_ICON[category] || TowerIcon
   const iconSvg = renderToStaticMarkup(<Icon size={17} color="#ffffff" strokeWidth={2.2} />)
   const el = document.createElement('div')
   el.style.cursor = 'pointer'
@@ -138,7 +128,7 @@ function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLaye
   )
 }
 
-function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, searchResults, goToPoi, compact }) {
+function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, searchResults, goToPoi }) {
   return (
     <div className="relative flex items-center shrink-0 flex-1 sm:flex-none">
       <Search size={15} className="absolute left-3 text-neutral-400 pointer-events-none" />
@@ -151,12 +141,12 @@ function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, sea
           setSearchOpen(true)
         }}
         placeholder="Cerca..."
-        className={`text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 outline-none border border-black/5 w-full sm:w-44 sm:focus:w-56 transition-all`}
+        className="text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 outline-none border border-black/5 w-full sm:w-44 sm:focus:w-56 transition-all"
       />
       {searchOpen && searchResults.length > 0 && (
         <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden z-30">
           {searchResults.map((poi) => {
-            const Icon = CATEGORY_ICON[poi.category_id] || FlagIcon
+            const Icon = CATEGORY_ICON[poi.category_id] || TowerIcon
             return (
               <button
                 key={poi.id}
@@ -174,7 +164,7 @@ function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, sea
   )
 }
 
-function CategoryPills({ activeCats, toggleCategory, showLabel }) {
+function CategoryPills({ activeCats, toggleCategory, compact }) {
   return (
     <>
       {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
@@ -184,11 +174,11 @@ function CategoryPills({ activeCats, toggleCategory, showLabel }) {
           <button
             key={cat}
             onClick={() => toggleCategory(cat)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-700 transition-all shrink-0"
+            className={`flex items-center gap-1.5 rounded-full font-medium text-neutral-700 transition-all shrink-0 ${compact ? 'px-2.5 py-1.5 text-xs' : 'px-3 py-2 text-sm'}`}
             style={{ background: active ? `${ACCENT}18` : 'transparent' }}
           >
-            <Icon size={17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
-            {showLabel && label}
+            <Icon size={compact ? 15 : 17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
+            {label}
           </button>
         )
       })}
@@ -242,13 +232,31 @@ export default function MapMonferrato() {
     map.on('load', () => {
       applyCanvasFilter(layer)
       renderMarkers()
+      // forza un resize/repaint appena la mappa e' effettivamente pronta
+      setTimeout(() => map.resize(), 50)
     })
 
     const resizeObserver = new ResizeObserver(() => map.resize())
     resizeObserver.observe(mapContainer.current)
 
+    // fix: quando si scorre dalla hero e la sezione mappa entra in vista,
+    // forza mappa e canvas a ridisegnarsi subito invece di aspettare un'interazione
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            map.resize()
+            map.triggerRepaint()
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+    intersectionObserver.observe(mapContainer.current)
+
     return () => {
       resizeObserver.disconnect()
+      intersectionObserver.disconnect()
       map.remove()
     }
   }, [])
@@ -381,15 +389,13 @@ export default function MapMonferrato() {
 
       <div ref={barRef} className="absolute top-0 left-0 right-0 z-20 bg-white/65 backdrop-blur-lg">
 
-        {/* DESKTOP / TABLET — riga unica */}
         <div className="hidden md:flex items-center px-4 h-16 gap-4">
           <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0">
             <House size={19} strokeWidth={2} color="#404040" />
           </button>
-
           <div className="flex-1 flex items-center justify-evenly gap-4">
             <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
-            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} showLabel />
+            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} />
             {SHOW_BUSINESS_FILTER && (
               <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">
                 Aziende
@@ -399,7 +405,6 @@ export default function MapMonferrato() {
           </div>
         </div>
 
-        {/* MOBILE — due righe fisse */}
         <div className="flex md:hidden flex-col">
           <div className="flex items-center px-3 h-14 gap-2">
             <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors shrink-0">
@@ -408,8 +413,8 @@ export default function MapMonferrato() {
             <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
             <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
           </div>
-          <div className="flex items-center justify-evenly px-2 h-12 border-t border-black/5">
-            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} showLabel={false} />
+          <div className="flex items-center justify-evenly px-2 py-1.5 border-t border-black/5">
+            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} compact />
           </div>
         </div>
       </div>
