@@ -1,33 +1,76 @@
 import Link from 'next/link'
 import { House } from 'lucide-react'
+import PageMenu from '@/components/PageMenu'
 
 export default function ConosciIlProgetto() {
   return (
     <main className="min-h-screen bg-neutral-50">
       <header className="px-6 py-5 border-b border-black/5">
-        <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
-          <House size={19} strokeWidth={2} color="#404040" />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
+            <House size={19} strokeWidth={2} color="#404040" />
+          </Link>
+          <PageMenu />
+        </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 py-20">
-        <h1 className="font-hero italic text-4xl md:text-5xl mb-6 text-center" style={{ color: '#F2760E' }}>
+      <div className="max-w-2xl mx-auto px-6 py-16 sm:py-20">
+        <h1 className="font-hero italic text-4xl md:text-5xl mb-10 text-center" style={{ color: '#F2760E' }}>
           Conosci il progetto
         </h1>
+
         <div className="text-neutral-600 leading-relaxed space-y-4">
           <p>
-            Tuffo in Monferrato nasce dalla voglia di raccontare un territorio che merita più attenzione
-            di quanta ne riceva di solito: borghi, cantine, punti panoramici e piccole scoperte che
-            raramente finiscono sulle guide turistiche tradizionali.
+            &ldquo;Tuffo in Monferrato&rdquo; nasce dall&apos;incontro tra l&apos;amore per le nostre colline
+            e la curiosità per la tecnologia.
           </p>
           <p>
-            Il progetto è pensato come una mappa viva del Monferrato, che cresce nel tempo con nuovi
-            luoghi, eventi e segnalazioni — costruita da chi il territorio lo conosce e lo vive davvero.
+            Chi è monferrino per nascita o per vocazione conosce bene il valore di questa terra: i paesaggi
+            sconfinati, il buon vino e le passeggiate tra i vicoli dei nostri borghi ci fanno sentire vivi.
           </p>
           <p>
-            È un progetto indipendente, in continua evoluzione. Se hai suggerimenti, luoghi da
-            segnalare o vuoi collaborare, scrivici dalla pagina Contattaci.
+            Per questo abbiamo deciso di studiare le nuove possibilità digitali e offrirvi un nuovo modo
+            di esplorare il Monferrato.
           </p>
+          <p>
+            Il turismo 4.0 pensato per raccontare gli scorci più veri già dal vostro schermo e conquistarvi
+            con le foto, le visite virtuali riprese con il drone ma soprattutto la mappa, il cuore pulsante
+            del nostro progetto.
+          </p>
+        </div>
+
+        <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>La mappa</h2>
+        <p className="text-neutral-600 leading-relaxed">
+          Viva e accessibile fin dal primo clic, rappresenta la nostra interpretazione del territorio.
+          Raccoglie borghi, punti panoramici, attrazioni e luoghi caratteristici che potrete facilmente
+          scoprire grazie alle categorie e alla barra di ricerca con cui orientarvi per pianificare nuovi
+          itinerari o ritrovare i vostri luoghi del cuore.
+        </p>
+
+        <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>Il nostro obiettivo</h2>
+        <p className="text-neutral-600 leading-relaxed">
+          Vogliamo raccontare il Monferrato con un linguaggio contemporaneo, senza perdere il legame con
+          le sue tradizioni. Crediamo che la tecnologia possa valorizzare il territorio, rendendolo più
+          immediato e stimolando la curiosità di chi ancora non lo conosce.
+          Se poi questo tuffo digitale vi porterà qui sulle colline, allora avremo raggiunto il nostro obiettivo.
+        </p>
+
+        <h2 className="font-hero italic text-2xl mt-12 mb-6" style={{ color: '#F2760E' }}>La squadra</h2>
+        <div className="flex flex-wrap gap-8 justify-center">
+          <div className="flex flex-col items-center text-center w-32">
+            <div className="w-24 h-24 rounded-full bg-neutral-200 mb-3 flex items-center justify-center text-neutral-400 text-xs">
+              foto
+            </div>
+            <p className="font-semibold text-neutral-800 text-sm">Lorenzo</p>
+            <p className="text-xs text-neutral-500">Founder</p>
+          </div>
+          <div className="flex flex-col items-center text-center w-32">
+            <div className="w-24 h-24 rounded-full bg-neutral-200 mb-3 flex items-center justify-center text-neutral-400 text-xs">
+              foto
+            </div>
+            <p className="font-semibold text-neutral-800 text-sm">Emanuele</p>
+            <p className="text-xs text-neutral-500">Co-founder</p>
+          </div>
         </div>
       </div>
     </main>

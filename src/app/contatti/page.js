@@ -1,13 +1,17 @@
-import { House } from 'lucide-react'
 import Link from 'next/link'
+import { House } from 'lucide-react'
+import PageMenu from '@/components/PageMenu'
 
 export default function Contatti() {
   return (
     <main className="min-h-screen bg-neutral-50">
       <header className="px-6 py-5 border-b border-black/5">
-        <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
-          <House size={19} strokeWidth={2} color="#404040" />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
+            <House size={19} strokeWidth={2} color="#404040" />
+          </Link>
+          <PageMenu />
+        </div>
       </header>
 
       <div className="max-w-xl mx-auto px-6 py-20 text-center">
