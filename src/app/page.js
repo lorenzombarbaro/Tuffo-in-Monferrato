@@ -6,7 +6,7 @@ import HeroMenu from '@/components/HeroMenu'
 export default function Home() {
   return (
     <main>
-      <section className="relative h-[100dvh] w-full overflow-hidden flex items-center justify-center">
+      <section className="relative w-full overflow-hidden flex items-center justify-center" style={{ height: 'var(--app-height, 100dvh)' }}>
         <div className="hero-perspective absolute inset-0">
           <div
             className="hero-bg"
@@ -32,7 +32,7 @@ export default function Home() {
         </a>
       </section>
 
-      <section id="mappa" className="relative h-[100dvh] w-full">
+      <section id="mappa" className="relative w-full" style={{ height: 'var(--app-height, 100dvh)' }}>
         <MapMonferrato />
       </section>
     </main>
