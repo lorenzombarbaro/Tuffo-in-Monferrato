@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { House } from 'lucide-react'
 
 export default function ViviIlMonferrato() {
   const sections = [
@@ -10,11 +11,13 @@ export default function ViviIlMonferrato() {
   return (
     <main className="min-h-screen bg-neutral-50">
       <header className="px-6 py-5 border-b border-black/5">
-        <Link href="/" className="text-sm text-neutral-500 hover:text-[#F2760E]">← Torna alla mappa</Link>
+        <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
+          <House size={19} strokeWidth={2} color="#404040" />
+        </Link>
       </header>
 
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <h1 className="font-hero italic text-4xl md:text-5xl text-neutral-900 mb-4">Vivi il Monferrato</h1>
+        <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
           Eventi, luoghi dove dormire e dove mangiare, scelti da chi il Monferrato lo vive ogni giorno.
         </p>

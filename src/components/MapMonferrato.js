@@ -9,7 +9,6 @@ import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
 
-// Bandiera a punta (pennant) — disegno originale
 function FlagIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
@@ -20,7 +19,6 @@ function FlagIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   )
 }
 
-// Ruota panoramica — disegno originale
 function FerrisWheelIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
@@ -35,7 +33,6 @@ function FerrisWheelIcon({ size = 16, color = 'currentColor', strokeWidth = 2 })
   )
 }
 
-// Binocolo semplificato — due lenti e un ponte, senza dettagli extra
 function SimpleBinocularsIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
@@ -110,6 +107,93 @@ function buildPinElement(category) {
     </div>
   `
   return el
+}
+
+function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLayer }) {
+  return (
+    <div className="relative flex items-center gap-2 shrink-0">
+      <span className="hidden sm:inline text-xs uppercase tracking-wide font-semibold" style={{ color: ACCENT }}>Vista</span>
+      <button
+        onClick={() => setViewDropdownOpen((v) => !v)}
+        className="text-sm font-medium text-neutral-800 flex items-center gap-1.5 px-2 sm:px-3 py-2 rounded-md hover:bg-black/5 transition-colors"
+      >
+        {LAYER_OPTIONS.find((o) => o.key === layer)?.label}
+        <ChevronDown size={14} className={`text-neutral-400 transition-transform ${viewDropdownOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {viewDropdownOpen && (
+        <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[160px] overflow-hidden z-30">
+          {LAYER_OPTIONS.map((opt) => (
+            <button
+              key={opt.key}
+              onClick={() => switchLayer(opt.key)}
+              className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 transition-colors"
+              style={{ color: layer === opt.key ? ACCENT : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, searchResults, goToPoi, compact }) {
+  return (
+    <div className="relative flex items-center shrink-0 flex-1 sm:flex-none">
+      <Search size={15} className="absolute left-3 text-neutral-400 pointer-events-none" />
+      <input
+        type="text"
+        value={searchQuery}
+        onFocus={() => setSearchOpen(true)}
+        onChange={(e) => {
+          setSearchQuery(e.target.value)
+          setSearchOpen(true)
+        }}
+        placeholder="Cerca..."
+        className={`text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 outline-none border border-black/5 w-full sm:w-44 sm:focus:w-56 transition-all`}
+      />
+      {searchOpen && searchResults.length > 0 && (
+        <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden z-30">
+          {searchResults.map((poi) => {
+            const Icon = CATEGORY_ICON[poi.category_id] || FlagIcon
+            return (
+              <button
+                key={poi.id}
+                onClick={() => goToPoi(poi)}
+                className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 flex items-center gap-2 text-neutral-700"
+              >
+                <Icon size={14} color={ACCENT} />
+                {poi.name}
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CategoryPills({ activeCats, toggleCategory, showLabel }) {
+  return (
+    <>
+      {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
+        const Icon = CATEGORY_ICON[cat]
+        const active = activeCats.has(cat)
+        return (
+          <button
+            key={cat}
+            onClick={() => toggleCategory(cat)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-700 transition-all shrink-0"
+            style={{ background: active ? `${ACCENT}18` : 'transparent' }}
+          >
+            <Icon size={17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
+            {showLabel && label}
+          </button>
+        )
+      })}
+    </>
+  )
 }
 
 export default function MapMonferrato() {
@@ -201,7 +285,6 @@ export default function MapMonferrato() {
     markersRef.current = {}
     pois.filter((p) => activeCats.has(p.category_id)).forEach((poi) => {
       const el = buildPinElement(poi.category_id)
-
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
       const popupHtml = `
@@ -216,7 +299,7 @@ export default function MapMonferrato() {
             <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer"
                style="display:block;text-align:center;background:${ACCENT};color:white;font-size:12.5px;
                       font-weight:600;padding:8px;border-radius:6px;text-decoration:none;">
-              Portami qui →
+              Portami qui
             </a>
           </div>
         </div>
@@ -297,97 +380,36 @@ export default function MapMonferrato() {
       <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
 
       <div ref={barRef} className="absolute top-0 left-0 right-0 z-20 bg-white/65 backdrop-blur-lg">
-        <div className="flex items-center px-4 h-16 gap-4">
 
-          <button
-            onClick={goHome}
-            title="Torna alla home"
-            className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0"
-          >
+        {/* DESKTOP / TABLET — riga unica */}
+        <div className="hidden md:flex items-center px-4 h-16 gap-4">
+          <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0">
             <House size={19} strokeWidth={2} color="#404040" />
           </button>
 
-          <div className="flex-1 flex items-center gap-3 sm:gap-4 overflow-x-auto sm:justify-evenly sm:overflow-visible no-scrollbar px-1">
-
-            <div className="relative flex items-center gap-2 shrink-0">
-              <span className="text-xs uppercase tracking-wide font-semibold" style={{ color: ACCENT }}>Vista</span>
-              <button
-                onClick={() => setViewDropdownOpen((v) => !v)}
-                className="text-sm font-medium text-neutral-800 flex items-center gap-1.5 px-3 py-2 rounded-md hover:bg-black/5 transition-colors"
-              >
-                {LAYER_OPTIONS.find((o) => o.key === layer)?.label}
-                <ChevronDown size={14} className={`text-neutral-400 transition-transform ${viewDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {viewDropdownOpen && (
-                <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[160px] overflow-hidden">
-                  {LAYER_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.key}
-                      onClick={() => switchLayer(opt.key)}
-                      className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 transition-colors"
-                      style={{ color: layer === opt.key ? ACCENT : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
-              const Icon = CATEGORY_ICON[cat]
-              const active = activeCats.has(cat)
-              return (
-                <button
-                  key={cat}
-                  onClick={() => toggleCategory(cat)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-700 transition-all shrink-0"
-                  style={{ background: active ? `${ACCENT}18` : 'transparent' }}
-                  title={label}
-                >
-                  <Icon size={17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
-                  <span className="hidden sm:inline">{label}</span>
-                </button>
-              )
-            })}
-
+          <div className="flex-1 flex items-center justify-evenly gap-4">
+            <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
+            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} showLabel />
             {SHOW_BUSINESS_FILTER && (
               <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">
                 Aziende
               </button>
             )}
+            <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
+          </div>
+        </div>
 
-            <div className="relative flex items-center shrink-0">
-              <Search size={15} className="absolute left-3 text-neutral-400 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onFocus={() => setSearchOpen(true)}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setSearchOpen(true)
-                }}
-                placeholder="Cerca un luogo..."
-                className="text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 w-28 sm:w-44 focus:w-40 sm:focus:w-56 transition-all outline-none border border-black/5"
-              />
-              {searchOpen && searchResults.length > 0 && (
-                <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden">
-                  {searchResults.map((poi) => {
-                    const Icon = CATEGORY_ICON[poi.category_id] || FlagIcon
-                    return (
-                      <button
-                        key={poi.id}
-                        onClick={() => goToPoi(poi)}
-                        className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 flex items-center gap-2 text-neutral-700"
-                      >
-                        <Icon size={14} color={ACCENT} />
-                        {poi.name}
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
+        {/* MOBILE — due righe fisse */}
+        <div className="flex md:hidden flex-col">
+          <div className="flex items-center px-3 h-14 gap-2">
+            <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors shrink-0">
+              <House size={18} strokeWidth={2} color="#404040" />
+            </button>
+            <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
+            <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
+          </div>
+          <div className="flex items-center justify-evenly px-2 h-12 border-t border-black/5">
+            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} showLabel={false} />
           </div>
         </div>
       </div>

@@ -21,8 +21,8 @@ export default function Home() {
           <h1 className="font-hero italic text-white text-4xl sm:text-5xl md:text-7xl mb-4">
             Tuf<span className="accent-letter">f</span>o in Monferrato
           </h1>
-          <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-xl mx-auto px-2">
-            Vivi il Monferrato, una terra da scoprire tutta d'un fiato
+          <p className="text-white/90 text-sm sm:text-lg md:text-xl mx-auto px-4 whitespace-nowrap">
+            Vivi il Monferrato, una terra da scoprire tutta d'un fiato.
           </p>
         </div>
 

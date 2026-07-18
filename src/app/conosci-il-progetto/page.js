@@ -1,14 +1,19 @@
 import Link from 'next/link'
+import { House } from 'lucide-react'
 
-export default function ChiSiamo() {
+export default function ConosciIlProgetto() {
   return (
     <main className="min-h-screen bg-neutral-50">
       <header className="px-6 py-5 border-b border-black/5">
-        <Link href="/" className="text-sm text-neutral-500 hover:text-[#F2760E]">← Torna alla mappa</Link>
+        <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
+          <House size={19} strokeWidth={2} color="#404040" />
+        </Link>
       </header>
 
       <div className="max-w-2xl mx-auto px-6 py-20">
-        <h1 className="font-hero italic text-4xl md:text-5xl text-neutral-900 mb-6 text-center">Chi siamo</h1>
+        <h1 className="font-hero italic text-4xl md:text-5xl mb-6 text-center" style={{ color: '#F2760E' }}>
+          Conosci il progetto
+        </h1>
         <div className="text-neutral-600 leading-relaxed space-y-4">
           <p>
             Tuffo in Monferrato nasce dalla voglia di raccontare un territorio che merita più attenzione
@@ -21,7 +26,7 @@ export default function ChiSiamo() {
           </p>
           <p>
             È un progetto indipendente, in continua evoluzione. Se hai suggerimenti, luoghi da
-            segnalare o vuoi collaborare, scrivici dalla pagina Contatti.
+            segnalare o vuoi collaborare, scrivici dalla pagina Contattaci.
           </p>
         </div>
       </div>

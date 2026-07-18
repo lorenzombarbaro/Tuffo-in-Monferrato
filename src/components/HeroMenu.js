@@ -2,11 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import { ChevronDown } from 'lucide-react'
 
 const LINKS = [
   { href: '/vivi-il-monferrato', label: 'Vivi il Monferrato' },
-  { href: '/contatti', label: 'Contatti' },
-  { href: '/chi-siamo', label: 'Chi siamo' },
+  { href: '/conosci-il-progetto', label: 'Conosci il progetto' },
+  { href: '/contatti', label: 'Contattaci' },
 ]
 
 export default function HeroMenu() {
@@ -28,7 +29,7 @@ export default function HeroMenu() {
         className="text-white text-sm font-medium tracking-wide flex items-center gap-1.5 bg-transparent"
       >
         Menu
-        <span className={`text-xs transition-transform ${open ? 'rotate-180' : ''}`}>▾</span>
+        <ChevronDown size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="mt-2 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl py-2 min-w-[190px]">
