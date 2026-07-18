@@ -1,6 +1,7 @@
 'use client'
 
 import MapMonferrato from '@/components/MapMonferrato'
+import HeroMenu from '@/components/HeroMenu'
 
 export default function Home() {
   return (
@@ -14,11 +15,13 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 bg-black/40" />
 
+        <HeroMenu />
+
         <div className="relative z-10 text-center px-6">
-          <h1 className="font-hero italic text-white text-5xl md:text-7xl mb-4">
+          <h1 className="font-hero italic text-white text-4xl sm:text-5xl md:text-7xl mb-4">
             Tuf<span className="accent-letter">f</span>o in Monferrato
           </h1>
-          <p className="text-white/90 text-lg md:text-xl max-w-xl mx-auto">
+          <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-xl mx-auto px-2">
             Vivi il Monferrato, una terra da scoprire tutta d'un fiato
           </p>
         </div>

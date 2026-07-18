@@ -307,9 +307,9 @@ export default function MapMonferrato() {
             <House size={19} strokeWidth={2} color="#404040" />
           </button>
 
-          <div className="flex-1 flex items-center justify-evenly gap-4">
+          <div className="flex-1 flex items-center gap-3 sm:gap-4 overflow-x-auto sm:justify-evenly sm:overflow-visible no-scrollbar px-1">
 
-            <div className="relative flex items-center gap-2">
+            <div className="relative flex items-center gap-2 shrink-0">
               <span className="text-xs uppercase tracking-wide font-semibold" style={{ color: ACCENT }}>Vista</span>
               <button
                 onClick={() => setViewDropdownOpen((v) => !v)}
@@ -341,11 +341,12 @@ export default function MapMonferrato() {
                 <button
                   key={cat}
                   onClick={() => toggleCategory(cat)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-700 transition-all"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-700 transition-all shrink-0"
                   style={{ background: active ? `${ACCENT}18` : 'transparent' }}
+                  title={label}
                 >
                   <Icon size={17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
-                  {label}
+                  <span className="hidden sm:inline">{label}</span>
                 </button>
               )
             })}
@@ -356,7 +357,7 @@ export default function MapMonferrato() {
               </button>
             )}
 
-            <div className="relative flex items-center">
+            <div className="relative flex items-center shrink-0">
               <Search size={15} className="absolute left-3 text-neutral-400 pointer-events-none" />
               <input
                 type="text"
@@ -367,7 +368,7 @@ export default function MapMonferrato() {
                   setSearchOpen(true)
                 }}
                 placeholder="Cerca un luogo..."
-                className="text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 w-44 focus:w-56 transition-all outline-none border border-black/5"
+                className="text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 w-28 sm:w-44 focus:w-40 sm:focus:w-56 transition-all outline-none border border-black/5"
               />
               {searchOpen && searchResults.length > 0 && (
                 <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden">

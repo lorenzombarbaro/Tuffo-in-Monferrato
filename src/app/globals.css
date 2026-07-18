@@ -57,3 +57,11 @@ body {
   animation: kenburns 14s ease-in-out infinite alternate;
   will-change: transform;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

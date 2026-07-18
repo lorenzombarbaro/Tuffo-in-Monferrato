@@ -1,5 +1,6 @@
 import { Fraunces } from "next/font/google";
 import "./globals.css";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="it">
       <body className={`${fraunces.variable} antialiased`}>
+        <ScrollToTop />
         {children}
       </body>
     </html>
