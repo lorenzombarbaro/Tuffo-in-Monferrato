@@ -394,7 +394,7 @@ export default function MapMonferrato() {
     <div style={{ position: 'absolute', inset: 0 }}>
       <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
 
-      <div ref={barRef} className="absolute top-0 left-0 right-0 z-20 bg-white/65 backdrop-blur-lg">
+      <div ref={barRef} className="absolute top-0 left-0 right-0 z-30 bg-white/65 backdrop-blur-lg">
 
         <div className="hidden md:flex items-center px-4 h-16 gap-4">
           <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0">
