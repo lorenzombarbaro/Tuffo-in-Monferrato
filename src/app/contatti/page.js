@@ -15,7 +15,7 @@ export default function Contatti() {
         </div>
       </header>
 
-      <div className="max-w-xl mx-auto px-6 md:px-[29px] py-16 sm:py-20">
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] py-16 sm:py-20">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-10 text-center" style={{ color: '#F2760E' }}>
           Contattaci
         </h1>
