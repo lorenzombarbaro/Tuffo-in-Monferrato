@@ -22,6 +22,10 @@ export default function Contatti() {
 
         <p className="text-neutral-600 leading-relaxed text-center">
           Hai una domanda, una curiosità o vuoi collaborare con noi? Scrivici.
+          <br />
+          <a href="mailto:tuffoinmonferrato@gmail.com" className="font-medium" style={{ color: '#F2760E' }}>
+            tuffoinmonferrato@gmail.com
+          </a>
         </p>
 
         <h2 className="font-hero italic text-2xl mt-12 mb-3 text-left" style={{ color: '#F2760E' }}>
