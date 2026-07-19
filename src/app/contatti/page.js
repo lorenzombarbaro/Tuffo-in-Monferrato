@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { House } from 'lucide-react'
 import PageMenu from '@/components/PageMenu'
+import ContactForm from '@/components/ContactForm'
 
 export default function Contatti() {
   return (
@@ -14,17 +15,23 @@ export default function Contatti() {
         </div>
       </header>
 
-      <div className="max-w-xl mx-auto px-6 md:px-[29px] py-20 text-center">
-        <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Contattaci</h1>
-        <p className="text-neutral-500 mb-8">
-          Hai una domanda, una curiosita o vuoi segnalarci un luogo? Scrivici.
+      <div className="max-w-xl mx-auto px-6 md:px-[29px] py-16 sm:py-20">
+        <h1 className="font-hero italic text-4xl md:text-5xl mb-10 text-center" style={{ color: '#F2760E' }}>
+          Contattaci
+        </h1>
+
+        <p className="text-neutral-600 leading-relaxed text-center">
+          Hai una domanda, una curiosità o vuoi collaborare con noi? Scrivici.
         </p>
-        <a href="mailto:tuffoinmonferrato@gmail.com" className="inline-block bg-[#F2760E] text-white text-sm font-medium px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
-          tuffoinmonferrato@gmail.com
-        </a>
-        <p className="text-xs text-neutral-400 mt-6 italic">
-          Il modulo di contatto diretto dal sito arriva a breve.
+
+        <h2 className="font-hero italic text-2xl mt-12 mb-3 text-center" style={{ color: '#F2760E' }}>
+          Segnalazioni
+        </h2>
+        <p className="text-neutral-600 leading-relaxed text-center mb-8">
+          Se sulla mappa non hai trovato quello che cercavi, indica il tuo suggerimento nella casella sottostante.
         </p>
+
+        <ContactForm />
       </div>
     </main>
   )
