@@ -24,10 +24,10 @@ export default function Contatti() {
           Hai una domanda, una curiosità o vuoi collaborare con noi? Scrivici.
         </p>
 
-        <h2 className="font-hero italic text-2xl mt-12 mb-3 text-center" style={{ color: '#F2760E' }}>
+        <h2 className="font-hero italic text-2xl mt-12 mb-3 text-left" style={{ color: '#F2760E' }}>
           Segnalazioni
         </h2>
-        <p className="text-neutral-600 leading-relaxed text-left mb-8">
+        <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto mb-8">
           Se sulla mappa non hai trovato quello che cercavi, indica il tuo suggerimento nella casella sottostante.
         </p>
 
