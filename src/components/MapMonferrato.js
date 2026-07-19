@@ -421,8 +421,8 @@ export default function MapMonferrato() {
         </div>
       </div>
 
-      {/* pillole filtro fluttuanti, solo mobile — stesso stile semi-trasparente della barra */}
-      <div className="flex md:hidden flex-col gap-2 absolute left-3 bottom-4 z-20">
+      {/* pillole filtro fluttuanti, solo mobile — sotto la barra, equidistanti */}
+      <div className="flex md:hidden justify-evenly gap-2 absolute left-3 right-3 top-[70px] z-20">
         {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
           const Icon = CATEGORY_ICON[cat]
           const active = activeCats.has(cat)
@@ -430,11 +430,11 @@ export default function MapMonferrato() {
             <button
               key={cat}
               onClick={() => toggleCategory(cat)}
-              className="flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium shadow-md bg-white/65 backdrop-blur-lg transition-all"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium shadow-md bg-white/65 backdrop-blur-lg transition-all flex-1"
               style={{ background: active ? `${ACCENT}CC` : 'rgba(255,255,255,0.65)' }}
             >
-              <Icon size={15} strokeWidth={2} color={active ? '#ffffff' : '#9a9a9a'} />
-              <span style={{ color: active ? '#ffffff' : '#404040' }}>{label}</span>
+              <Icon size={14} strokeWidth={2} color={active ? '#ffffff' : '#9a9a9a'} />
+              <span className="text-center" style={{ color: active ? '#ffffff' : '#404040' }}>{label}</span>
             </button>
           )
         })}

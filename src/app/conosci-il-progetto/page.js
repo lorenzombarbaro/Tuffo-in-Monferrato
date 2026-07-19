@@ -19,7 +19,7 @@ export default function ConosciIlProgetto() {
           Conosci il progetto
         </h1>
 
-        <div className="text-neutral-600 leading-relaxed space-y-4">
+        <div className="text-neutral-600 leading-relaxed space-y-4 text-justify [text-justify:inter-word] hyphens-auto">
           <p>
             &ldquo;Tuffo in Monferrato&rdquo; nasce dall&apos;incontro tra l&apos;amore per le nostre colline
             e la curiosità per la tecnologia.
@@ -40,7 +40,7 @@ export default function ConosciIlProgetto() {
         </div>
 
         <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>La mappa</h2>
-        <p className="text-neutral-600 leading-relaxed">
+        <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto">
           Viva e accessibile fin dal primo clic, rappresenta la nostra interpretazione del territorio.
           Raccoglie borghi, punti panoramici, attrazioni e luoghi caratteristici che potrete facilmente
           scoprire grazie alle categorie e alla barra di ricerca con cui orientarvi per pianificare nuovi
@@ -48,7 +48,7 @@ export default function ConosciIlProgetto() {
         </p>
 
         <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>Il nostro obiettivo</h2>
-        <p className="text-neutral-600 leading-relaxed">
+        <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto">
           Vogliamo raccontare il Monferrato con un linguaggio contemporaneo, senza perdere il legame con
           le sue tradizioni. Crediamo che la tecnologia possa valorizzare il territorio, rendendolo più
           immediato e stimolando la curiosità di chi ancora non lo conosce.
