@@ -25,7 +25,7 @@ export default function Home() {
         </div>
 
         <a href="#mappa" className="hidden md:flex absolute bottom-8 z-10 text-white/80 text-sm flex-col items-center gap-2 animate-bounce">
-          Scorri per esplorare
+          Visualizza la mappa
           <span>↓</span>
         </a>
 

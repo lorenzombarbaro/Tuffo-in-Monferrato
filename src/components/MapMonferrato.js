@@ -112,7 +112,7 @@ function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLaye
         <ChevronDown size={14} className={`text-neutral-400 transition-transform ${viewDropdownOpen ? 'rotate-180' : ''}`} />
       </button>
       {viewDropdownOpen && (
-        <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[160px] overflow-hidden z-30">
+        <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[160px] overflow-hidden z-40">
           {LAYER_OPTIONS.map((opt) => (
             <button
               key={opt.key}
