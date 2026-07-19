@@ -22,10 +22,14 @@ export default function ConosciIlProgetto() {
         <div className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto">
           <p>
             &ldquo;Tuffo in Monferrato&rdquo; nasce dall&apos;incontro tra l&apos;amore per le nostre colline
-            e la curiosità per la tecnologia. Chi è monferrino per nascita o per vocazione conosce bene il
+            e la curiosità per la tecnologia.
+            <br /><br />
+            Chi è monferrino per nascita o per vocazione conosce bene il
             valore di questa terra: i paesaggi sconfinati, il buon vino e le passeggiate tra i vicoli dei
             nostri borghi ci fanno sentire vivi. Per questo abbiamo deciso di studiare le nuove possibilità
-            digitali e offrirvi un nuovo modo di esplorare il Monferrato. Il turismo 4.0 pensato per
+            digitali e offrirvi un nuovo modo di esplorare il Monferrato.
+            <br /><br />
+            Il turismo 4.0 pensato per
             raccontare gli scorci più veri già dal vostro schermo e conquistarvi con le foto, le visite
             virtuali riprese con il drone ma soprattutto la mappa, il cuore pulsante del nostro progetto.
           </p>

@@ -69,8 +69,8 @@ const LAYER_FILTERS = {
 
 const LAYER_OPTIONS = [
   { key: 'realistico', label: 'Satellitare' },
-  { key: 'pianta', label: 'Essenziale' },
-  { key: 'acquerello', label: 'Pittografica' },
+  { key: 'acquerello', label: 'Topografica' },
+  { key: 'pianta', label: 'Amministrativa' },
 ]
 
 const CATEGORY_LABEL = {
