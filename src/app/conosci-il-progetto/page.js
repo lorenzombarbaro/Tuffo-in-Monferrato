@@ -48,6 +48,7 @@ export default function ConosciIlProgetto() {
           Vogliamo raccontare il Monferrato con un linguaggio contemporaneo, senza perdere il legame con
           le sue tradizioni. Crediamo che la tecnologia possa valorizzare il territorio, rendendolo più
           immediato e stimolando la curiosità di chi ancora non lo conosce.
+          <br /><br />
           Se poi questo tuffo digitale vi porterà qui sulle colline, allora avremo raggiunto il nostro obiettivo.
         </p>
 
