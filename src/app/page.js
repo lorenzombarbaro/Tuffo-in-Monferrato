@@ -7,7 +7,7 @@ import DesktopMapSection from '@/components/DesktopMapSection'
 export default function Home() {
   return (
     <main>
-      <section className="mobile-page-bleed relative w-full overflow-hidden flex items-center justify-center" style={{ minHeight: 'var(--app-height, 100dvh)' }}>
+      <section className="relative w-full overflow-hidden flex items-center justify-center" style={{ minHeight: 'var(--app-height, 100dvh)' }}>
         <div className="hero-perspective absolute inset-0">
           <div className="hero-bg" style={{ backgroundImage: "url('/hero.jpg')" }} />
         </div>

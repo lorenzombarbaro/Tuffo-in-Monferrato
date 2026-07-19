@@ -73,12 +73,4 @@ html, body {
 
 
 
-/* pagine mobile leggermente piu' "lunghe" del viewport reale, per non lasciare
-   mai un bordo scoperto quando Safari ridimensiona la sua barra */
-@media (max-width: 767px) {
-  .mobile-page-bleed {
-    min-height: calc(var(--app-height, 100dvh) + 40px);
-    margin-top: -20px;
-    padding-bottom: 20px;
-  }
-}
+
