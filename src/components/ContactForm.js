@@ -37,7 +37,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-xs text-neutral-500 mb-1">La tua email (per ricevere risposta)</label>
+        <label className="block text-xs text-neutral-500 mb-1">La tua email (per ricevere la nostra risposta)</label>
         <input
           type="email"
           required

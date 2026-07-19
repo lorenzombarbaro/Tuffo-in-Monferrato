@@ -27,7 +27,7 @@ export default function Contatti() {
         <h2 className="font-hero italic text-2xl mt-12 mb-3 text-center" style={{ color: '#F2760E' }}>
           Segnalazioni
         </h2>
-        <p className="text-neutral-600 leading-relaxed text-center mb-8">
+        <p className="text-neutral-600 leading-relaxed text-left mb-8">
           Se sulla mappa non hai trovato quello che cercavi, indica il tuo suggerimento nella casella sottostante.
         </p>
 
