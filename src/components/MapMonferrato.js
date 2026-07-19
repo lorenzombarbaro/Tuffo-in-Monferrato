@@ -412,18 +412,35 @@ export default function MapMonferrato() {
           </div>
         </div>
 
-        <div className="flex md:hidden flex-col">
-          <div className="flex items-center px-3 h-14 gap-2">
-            <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors shrink-0">
-              <House size={18} strokeWidth={2} color="#404040" />
-            </button>
-            <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
-            <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
-          </div>
-          <div className="flex items-center justify-evenly px-2 py-1.5 border-t border-black/5">
-            <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} compact />
-          </div>
+        <div className="flex md:hidden items-center px-3 h-14 gap-2">
+          <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors shrink-0">
+            <House size={18} strokeWidth={2} color="#404040" />
+          </button>
+          <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
+          <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
         </div>
+      </div>
+
+      {/* pillole filtro fluttuanti, solo mobile */}
+      <div className="flex md:hidden flex-col gap-2 absolute left-3 top-[70px] z-20">
+        {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
+          const Icon = CATEGORY_ICON[cat]
+          const active = activeCats.has(cat)
+          return (
+            <button
+              key={cat}
+              onClick={() => toggleCategory(cat)}
+              className="flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium shadow-md backdrop-blur-md transition-all"
+              style={{
+                background: active ? ACCENT : 'rgba(255,255,255,0.8)',
+                color: active ? '#ffffff' : '#404040',
+              }}
+            >
+              <Icon size={15} strokeWidth={2} color={active ? '#ffffff' : '#9a9a9a'} />
+              {label}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

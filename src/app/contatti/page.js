@@ -4,7 +4,7 @@ import PageMenu from '@/components/PageMenu'
 
 export default function Contatti() {
   return (
-    <main className="min-h-screen bg-neutral-50">
+    <main className="mobile-page-bleed min-h-screen bg-neutral-50">
       <header className="px-6 py-5 border-b border-black/5">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">

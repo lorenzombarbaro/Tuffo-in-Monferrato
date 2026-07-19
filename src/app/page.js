@@ -7,7 +7,7 @@ import DesktopMapSection from '@/components/DesktopMapSection'
 export default function Home() {
   return (
     <main>
-      <section className="relative w-full overflow-hidden flex items-center justify-center" style={{ minHeight: 'var(--app-height, 100dvh)' }}>
+      <section className="mobile-page-bleed relative w-full overflow-hidden flex items-center justify-center" style={{ minHeight: 'var(--app-height, 100dvh)' }}>
         <div className="hero-perspective absolute inset-0">
           <div className="hero-bg" style={{ backgroundImage: "url('/hero.jpg')" }} />
         </div>
@@ -29,8 +29,9 @@ export default function Home() {
           <span>↓</span>
         </a>
 
-        <Link href="/mappa" className="flex md:hidden absolute bottom-10 z-10 text-white text-sm font-medium items-center gap-2 bg-white/15 backdrop-blur-sm px-5 py-3 rounded-full">
-          Esplora la mappa →
+        <Link href="/mappa" className="flex md:hidden absolute bottom-8 z-10 text-white/80 text-sm flex-col items-center gap-2 animate-bounce">
+          Scorri per esplorare
+          <span>↓</span>
         </Link>
       </section>
 
