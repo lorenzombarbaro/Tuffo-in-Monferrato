@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
@@ -199,6 +200,8 @@ export default function MapMonferrato() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
   const [mapReady, setMapReady] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     async function loadPois() {
@@ -380,7 +383,11 @@ export default function MapMonferrato() {
   }
 
   function goHome() {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      router.push('/')
+    }
   }
 
   return (

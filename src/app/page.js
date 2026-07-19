@@ -1,7 +1,8 @@
 'use client'
 
-import MapMonferrato from '@/components/MapMonferrato'
+import Link from 'next/link'
 import HeroMenu from '@/components/HeroMenu'
+import DesktopMapSection from '@/components/DesktopMapSection'
 
 export default function Home() {
   return (
@@ -29,19 +30,25 @@ export default function Home() {
           </p>
         </div>
 
-        <a href="#mappa" className="absolute bottom-8 z-10 text-white/80 text-sm flex flex-col items-center gap-2 animate-bounce">
+        {/* DESKTOP: scorre alla sezione mappa nella stessa pagina */}
+        
+          href="#mappa"
+          className="hidden md:flex absolute bottom-8 z-10 text-white/80 text-sm flex-col items-center gap-2 animate-bounce"
+        >
           Scorri per esplorare
           <span>↓</span>
         </a>
+
+        {/* MOBILE: naviga verso la pagina mappa a se stante */}
+        <Link
+          href="/mappa"
+          className="flex md:hidden absolute bottom-10 z-10 text-white text-sm font-medium items-center gap-2 bg-white/15 backdrop-blur-sm px-5 py-3 rounded-full"
+        >
+          Esplora la mappa →
+        </Link>
       </section>
 
-      <section
-        id="mappa"
-        className="relative w-full bg-[#14110f]"
-        style={{ minHeight: 'var(--app-height, 100dvh)' }}
-      >
-        <MapMonferrato />
-      </section>
+      <DesktopMapSection />
     </main>
   )
 }
