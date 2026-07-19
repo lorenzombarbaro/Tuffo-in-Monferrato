@@ -24,15 +24,17 @@ function TowerIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   )
 }
 
-// Biglietto d'ingresso — ispirato al riferimento del cliente
-function TicketIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
+// Capitello di colonna classica — disegno originale
+function ColumnCapitalIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
          strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="6" width="18" height="12" rx="2.5" />
-      <path d="M12 6v2.5" />
-      <path d="M12 10.75v2.5" />
-      <path d="M12 15.5V18" />
+      <path d="M4 4H20" />
+      <path d="M4 7H20" />
+      <path d="M6 7L9 11H15L18 7" />
+      <path d="M9 11V21" />
+      <path d="M15 11V21" />
+      <path d="M6 21H18" />
     </svg>
   )
 }
@@ -79,7 +81,7 @@ const CATEGORY_LABEL = {
 
 const CATEGORY_ICON = {
   borgo: TowerIcon,
-  cultura: TicketIcon,
+  cultura: ColumnCapitalIcon,
   panorama: Binoculars,
 }
 

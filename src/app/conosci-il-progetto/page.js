@@ -4,7 +4,7 @@ import PageMenu from '@/components/PageMenu'
 
 export default function ConosciIlProgetto() {
   return (
-    <main className="min-h-screen bg-neutral-50">
+    <main className="min-h-screen bg-white">
       <header className="px-6 py-5 border-b border-black/5">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
@@ -14,28 +14,20 @@ export default function ConosciIlProgetto() {
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 py-16 sm:py-20">
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] py-16 sm:py-20">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-10 text-center" style={{ color: '#F2760E' }}>
           Conosci il progetto
         </h1>
 
-        <div className="text-neutral-600 leading-relaxed space-y-4 text-justify [text-justify:inter-word] hyphens-auto">
+        <div className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto">
           <p>
             &ldquo;Tuffo in Monferrato&rdquo; nasce dall&apos;incontro tra l&apos;amore per le nostre colline
-            e la curiosità per la tecnologia.
-          </p>
-          <p>
-            Chi è monferrino per nascita o per vocazione conosce bene il valore di questa terra: i paesaggi
-            sconfinati, il buon vino e le passeggiate tra i vicoli dei nostri borghi ci fanno sentire vivi.
-          </p>
-          <p>
-            Per questo abbiamo deciso di studiare le nuove possibilità digitali e offrirvi un nuovo modo
-            di esplorare il Monferrato.
-          </p>
-          <p>
-            Il turismo 4.0 pensato per raccontare gli scorci più veri già dal vostro schermo e conquistarvi
-            con le foto, le visite virtuali riprese con il drone ma soprattutto la mappa, il cuore pulsante
-            del nostro progetto.
+            e la curiosità per la tecnologia. Chi è monferrino per nascita o per vocazione conosce bene il
+            valore di questa terra: i paesaggi sconfinati, il buon vino e le passeggiate tra i vicoli dei
+            nostri borghi ci fanno sentire vivi. Per questo abbiamo deciso di studiare le nuove possibilità
+            digitali e offrirvi un nuovo modo di esplorare il Monferrato. Il turismo 4.0 pensato per
+            raccontare gli scorci più veri già dal vostro schermo e conquistarvi con le foto, le visite
+            virtuali riprese con il drone ma soprattutto la mappa, il cuore pulsante del nostro progetto.
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import PageMenu from '@/components/PageMenu'
 
 export default function Contatti() {
   return (
-    <main className="min-h-screen bg-neutral-50">
+    <main className="min-h-screen bg-white">
       <header className="px-6 py-5 border-b border-black/5">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
@@ -14,7 +14,7 @@ export default function Contatti() {
         </div>
       </header>
 
-      <div className="max-w-xl mx-auto px-6 py-20 text-center">
+      <div className="max-w-xl mx-auto px-6 md:px-[29px] py-20 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Contattaci</h1>
         <p className="text-neutral-500 mb-8">
           Hai una domanda, una curiosita o vuoi segnalarci un luogo? Scrivici.
