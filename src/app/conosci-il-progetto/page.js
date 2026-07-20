@@ -68,6 +68,16 @@ export default function ConosciIlProgetto() {
             <p className="font-semibold text-neutral-800 text-sm">Emanuele</p>
             <p className="text-xs text-neutral-500">Co-founder</p>
           </div>
+	<div className="text-center my-12">
+	  <a
+	    href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	    className="inline-block bg-[#F2760E] text-white text-sm font-medium px-6 py-3 rounded-full hover:opacity-90 transition-opacity"
+	  >
+	    Sostieni Tuffo in Monferrato con una donazione
+  </a>
+</div>
         </div>
       </div>
     </main>
