@@ -51,7 +51,6 @@ export default function ConosciIlProgetto() {
           <br /><br />
           Se poi questo tuffo digitale vi porterà qui sulle colline, allora avremo raggiunto il nostro obiettivo.
         </p>
-
         <h2 className="font-hero italic text-2xl mt-12 mb-6" style={{ color: '#F2760E' }}>La squadra</h2>
         <div className="flex flex-wrap gap-8 justify-center">
           <div className="flex flex-col items-center text-center w-32">
@@ -68,7 +67,7 @@ export default function ConosciIlProgetto() {
             <p className="font-semibold text-neutral-800 text-sm">Emanuele</p>
             <p className="text-xs text-neutral-500">Co-founder</p>
           </div>
-	</p>
+	</div>
 	<h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>
           Sostieni il progetto
         </h2>
