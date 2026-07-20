@@ -97,6 +97,7 @@ export default function ConosciIlProgetto() {
         </p>
         <div className="text-center">
           
+            <a
             href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00"
             target="_blank"
             rel="noopener noreferrer"
