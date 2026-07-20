@@ -68,22 +68,23 @@ export default function ConosciIlProgetto() {
             <p className="font-semibold text-neutral-800 text-sm">Emanuele</p>
             <p className="text-xs text-neutral-500">Co-founder</p>
           </div>
-	<div className="text-center my-16 max-w-2xl mx-auto px-4">
-  <h2 className="text-2xl font-bold text-[#F2760E] mb-4">
-    Sostieni il progetto
-  </h2>
-  <p className="text-gray-600 mb-8 leading-relaxed">
-    Tuffo in Monferrato è un progetto indipendente che vive grazie al supporto di chi ama questo territorio. Ogni donazione, anche piccola, ci aiuta a continuare a raccontare e valorizzare le storie, la cultura e la bellezza del Monferrato.
-  </p>
-  <a
-    href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-block bg-[#F2760E] text-white text-sm font-medium px-8 py-3 rounded-full hover:opacity-90 transition-opacity font-semibold shadow-md"
-  >
-    Sostieni Tuffo in Monferrato con una donazione
-  </a>
-</div>
+<h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>
+          Sostieni il progetto
+        </h2>
+        <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word]">
+          Tuffo in Monferrato è un progetto indipendente che vive grazie al supporto di chi ama questo territorio. Ogni donazione, anche piccola, ci aiuta a continuare a raccontare e valorizzare le storie, la cultura e la bellezza del Monferrato.
+          <br /><br />
+          <span className="block text-center mt-6">
+            <a
+              href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-[#F2760E] text-white text-sm font-medium px-8 py-3 rounded-full hover:opacity-90 transition-opacity font-semibold"
+            >
+              Sostieni Tuffo in Monferrato con una donazione
+            </a>
+          </span>
+        </p>
         </div>
       </div>
     </main>
