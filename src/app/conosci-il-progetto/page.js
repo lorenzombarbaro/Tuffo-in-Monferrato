@@ -5,8 +5,7 @@ import PageMenu from '@/components/PageMenu'
 export default function ConosciIlProgetto() {
   return (
     <main className="min-h-screen bg-white">
-      <header className="px-6 py-5 border-b border-black/5">
-        <div cla<a
+      <header className="px-6 py-5 border-<a
             href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00"
             target="_blank"
             rel="noopener noreferrer"
