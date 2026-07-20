@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Lock } from 'lucide-react'
+import { Lock, LockOpen } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function LockedContent({ children }) {
@@ -21,15 +21,23 @@ export default function LockedContent({ children }) {
 
   if (!checked) return null
 
-  if (session) return children
+  const isUnlocked = !!session
 
   return (
     <div className="relative">
-      <div className="pointer-events-none select-none blur-sm opacity-50">{children}</div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/40">
-        <Lock size={20} color="#F2760E" />
-        <p className="text-xs text-neutral-600 font-medium">Accedi per sbloccare</p>
-      </div>
+      <div className={isUnlocked ? '' : 'pointer-events-none select-none blur-sm opacity-50'}>{children}</div>
+
+      {!isUnlocked && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Lock size={22} color="#F2760E" strokeWidth={2} />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="absolute top-2 right-2">
+          <LockOpen size={16} color="#F2760E" strokeWidth={2} />
+        </div>
+      )}
     </div>
   )
 }

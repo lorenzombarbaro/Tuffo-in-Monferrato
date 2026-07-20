@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { User, Lock, LockOpen, X } from 'lucide-react'
+import { User, X } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
@@ -9,7 +9,7 @@ const ACCENT = '#F2760E'
 export default function UserMenu({ light = false }) {
   const [session, setSession] = useState(null)
   const [open, setOpen] = useState(false)
-  const [mode, setMode] = useState('login') // 'login' | 'signup'
+  const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -32,6 +32,13 @@ export default function UserMenu({ light = false }) {
     if (open) document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
+
+  // permette ad altri componenti (es. la mappa) di aprire questo pannello
+  useEffect(() => {
+    function handleOpenRequest() { setOpen(true) }
+    window.addEventListener('open-user-menu', handleOpenRequest)
+    return () => window.removeEventListener('open-user-menu', handleOpenRequest)
+  }, [])
 
   async function handleLogin(e) {
     e.preventDefault()
@@ -74,20 +81,11 @@ export default function UserMenu({ light = false }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed top-6 right-6 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-        style={{
-          background: light ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.05)',
-          backdropFilter: 'blur(6px)',
-        }}
+        className="w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0"
+        style={{ background: light ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.05)' }}
         title={isLoggedIn ? 'Il tuo account' : 'Accedi o registrati'}
       >
         <User size={19} color={light ? '#ffffff' : '#404040'} strokeWidth={2} />
-        <span
-          className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center border-2"
-          style={{ background: isLoggedIn ? ACCENT : '#8a8a8a', borderColor: light ? '#241B24' : '#ffffff' }}
-        >
-          {isLoggedIn ? <LockOpen size={9} color="#fff" /> : <Lock size={9} color="#fff" />}
-        </span>
       </button>
 
       {open && (
@@ -106,11 +104,6 @@ export default function UserMenu({ light = false }) {
               <div>
                 <p className="text-sm text-neutral-500 mb-1">Hai effettuato l'accesso come</p>
                 <p className="text-sm font-medium text-neutral-800 mb-6">{session.user.email}</p>
-                <div className="bg-orange-50 border border-orange-100 rounded-lg px-4 py-3 mb-6">
-                  <p className="text-sm text-neutral-700">
-                    🔓 Hai sbloccato i contenuti riservati agli utenti registrati.
-                  </p>
-                </div>
                 <button
                   onClick={handleLogout}
                   className="w-full text-sm font-medium text-neutral-600 border border-black/10 rounded-full py-2.5 hover:bg-black/5 transition-colors"
@@ -124,20 +117,14 @@ export default function UserMenu({ light = false }) {
                   <button
                     onClick={() => { setMode('login'); setError(null); setInfo(null) }}
                     className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
-                    style={{
-                      background: mode === 'login' ? `${ACCENT}18` : 'transparent',
-                      color: mode === 'login' ? ACCENT : '#8a8a8a',
-                    }}
+                    style={{ background: mode === 'login' ? `${ACCENT}18` : 'transparent', color: mode === 'login' ? ACCENT : '#8a8a8a' }}
                   >
                     Accedi
                   </button>
                   <button
                     onClick={() => { setMode('signup'); setError(null); setInfo(null) }}
                     className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
-                    style={{
-                      background: mode === 'signup' ? `${ACCENT}18` : 'transparent',
-                      color: mode === 'signup' ? ACCENT : '#8a8a8a',
-                    }}
+                    style={{ background: mode === 'signup' ? `${ACCENT}18` : 'transparent', color: mode === 'signup' ? ACCENT : '#8a8a8a' }}
                   >
                     Registrati
                   </button>
@@ -146,34 +133,20 @@ export default function UserMenu({ light = false }) {
                 <form onSubmit={mode === 'login' ? handleLogin : handleSignup} className="space-y-4">
                   <div>
                     <label className="block text-xs text-neutral-500 mb-1">Email</label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]"
-                    />
+                    <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
                   </div>
                   <div>
                     <label className="block text-xs text-neutral-500 mb-1">Password</label>
-                    <input
-                      type="password"
-                      required
-                      minLength={6}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]"
-                    />
+                    <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
+                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
                   </div>
 
                   {error && <p className="text-sm text-red-600">{error}</p>}
                   {info && <p className="text-sm text-green-600">{info}</p>}
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-[#F2760E] text-white text-sm font-medium py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50"
-                  >
+                  <button type="submit" disabled={loading}
+                    className="w-full bg-[#F2760E] text-white text-sm font-medium py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50">
                     {loading ? 'Attendere...' : mode === 'login' ? 'Accedi' : 'Crea account'}
                   </button>
                 </form>

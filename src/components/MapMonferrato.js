@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
+import { House, ChevronDown, Search, Binoculars, Lock } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -68,9 +68,9 @@ const LAYER_FILTERS = {
 }
 
 const LAYER_OPTIONS = [
-  { key: 'realistico', label: 'Satellitare' },
-  { key: 'acquerello', label: 'Topografica' },
-  { key: 'pianta', label: 'Amministrativa' },
+  { key: 'realistico', label: 'Satellitare', locked: false },
+  { key: 'acquerello', label: 'Topografica', locked: true },
+  { key: 'pianta', label: 'Amministrativa', locked: true },
 ]
 
 const CATEGORY_LABEL = {
@@ -102,7 +102,16 @@ function buildPinElement(category) {
   return el
 }
 
-function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLayer }) {
+function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLayer, session }) {
+  function handleClick(opt) {
+    if (opt.locked && !session) {
+      setViewDropdownOpen(false)
+      window.dispatchEvent(new CustomEvent('open-user-menu'))
+      return
+    }
+    switchLayer(opt.key)
+  }
+
   return (
     <div className="relative flex items-center gap-2 shrink-0">
       <span className="hidden sm:inline text-xs uppercase tracking-wide font-semibold" style={{ color: ACCENT }}>Vista</span>
@@ -114,17 +123,21 @@ function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLaye
         <ChevronDown size={14} className={`text-neutral-400 transition-transform ${viewDropdownOpen ? 'rotate-180' : ''}`} />
       </button>
       {viewDropdownOpen && (
-        <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[160px] overflow-hidden z-40">
-          {LAYER_OPTIONS.map((opt) => (
-            <button
-              key={opt.key}
-              onClick={() => switchLayer(opt.key)}
-              className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 transition-colors"
-              style={{ color: layer === opt.key ? ACCENT : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
-            >
-              {opt.label}
-            </button>
-          ))}
+        <div className="absolute left-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[190px] overflow-hidden z-40">
+          {LAYER_OPTIONS.map((opt) => {
+            const isLockedForUser = opt.locked && !session
+            return (
+              <button
+                key={opt.key}
+                onClick={() => handleClick(opt)}
+                className="w-full flex items-center justify-between text-left text-sm px-4 py-2.5 hover:bg-black/5 transition-colors"
+                style={{ color: layer === opt.key ? ACCENT : isLockedForUser ? '#b0b0b0' : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
+              >
+                {opt.label}
+                {isLockedForUser && <Lock size={13} color="#b0b0b0" />}
+              </button>
+            )
+          })}
         </div>
       )}
     </div>
@@ -202,6 +215,13 @@ export default function MapMonferrato() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
   const [mapReady, setMapReady] = useState(false)
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => setSession(newSession))
+    return () => listener.subscription.unsubscribe()
+  }, [])
   const router = useRouter()
   const pathname = usePathname()
 
@@ -403,7 +423,7 @@ export default function MapMonferrato() {
             <House size={19} strokeWidth={2} color="#404040" />
           </button>
           <div className="flex-1 flex items-center justify-evenly gap-4">
-            <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
+            <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} session={session} />
             <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} />
             {SHOW_BUSINESS_FILTER && (
               <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">
@@ -418,7 +438,7 @@ export default function MapMonferrato() {
           <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors shrink-0">
             <House size={18} strokeWidth={2} color="#404040" />
           </button>
-          <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} />
+          <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} session={session} />
           <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
         </div>
       </div>

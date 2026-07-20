@@ -23,7 +23,7 @@ export default function PageMenu() {
   }, [])
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative flex items-center h-10">
       <button onClick={() => setOpen((o) => !o)} className="text-sm font-medium text-neutral-700 flex items-center gap-1.5">
         Menu
         <ChevronDown size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />

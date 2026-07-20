@@ -23,7 +23,7 @@ export default function HeroMenu() {
   }, [])
 
   return (
-    <div ref={ref} className="absolute top-6 left-6 z-20 text-left">
+    <div ref={ref} className="relative flex items-center h-10">
       <button
         onClick={() => setOpen((o) => !o)}
         className="text-white text-sm font-medium tracking-wide flex items-center gap-1.5 bg-transparent"
@@ -32,7 +32,7 @@ export default function HeroMenu() {
         <ChevronDown size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="mt-2 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl py-2 min-w-[190px]">
+        <div className="absolute left-0 top-full mt-2 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl py-2 min-w-[190px] z-30">
           {LINKS.map((l) => (
             <Link
               key={l.href}

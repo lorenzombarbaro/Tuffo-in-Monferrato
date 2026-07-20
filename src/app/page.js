@@ -14,8 +14,10 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 bg-black/40" />
 
-        <HeroMenu />
-        <UserMenu light />
+        <div className="absolute top-6 left-6 right-6 z-20 flex items-center justify-between">
+          <HeroMenu />
+          <UserMenu light />
+        </div>
 
         <div className="relative z-10 text-center px-6">
           <h1 className="font-hero italic text-white text-4xl sm:text-5xl md:text-7xl mb-4">

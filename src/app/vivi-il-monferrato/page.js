@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { House } from 'lucide-react'
-import LockedContent from '@/components/LockedContent'
 import PageMenu from '@/components/PageMenu'
 import UserMenu from '@/components/UserMenu'
+import LockedContent from '@/components/LockedContent'
 
 export default function ViviIlMonferrato() {
   const sections = [
@@ -13,19 +13,17 @@ export default function ViviIlMonferrato() {
 
   return (
     <main className="min-h-screen bg-white">
-      <header className="px-6 py-5 border-b border-black/5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
-              <House size={19} strokeWidth={2} color="#404040" />
-            </Link>
-            <PageMenu />
-          </div>
+      <header className="px-6 py-5 border-b border-black/5 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
+            <House size={19} strokeWidth={2} color="#404040" />
+          </Link>
+          <PageMenu />
         </div>
         <UserMenu />
       </header>
 
-      <div className="max-w-3xl mx-auto px-6 md:px-[29px] py-16 text-center">
+      <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
           Eventi, luoghi dove dormire e dove mangiare, scelti da chi il Monferrato lo vive ogni giorno.
@@ -33,17 +31,15 @@ export default function ViviIlMonferrato() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 pb-24 grid sm:grid-cols-3 gap-6">
-        {sections.map((s) => {
-          const card = (
+        {sections.map((s) => (
+          <LockedContent key={s.title}>
             <div className="bg-white rounded-lg border border-black/5 p-6">
               <h2 className="font-semibold text-neutral-800 mb-2">{s.title}</h2>
               <p className="text-sm text-neutral-500 mb-4">{s.desc}</p>
               <p className="text-xs text-neutral-400 italic">Contenuti in arrivo</p>
             </div>
-          )
-          if (s.title === 'Eventi') return <div key={s.title}>{card}</div>
-          return <LockedContent key={s.title}>{card}</LockedContent>
-        })}
+          </LockedContent>
+        ))}
       </div>
     </main>
   )
