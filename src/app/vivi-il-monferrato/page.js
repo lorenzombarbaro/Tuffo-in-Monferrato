@@ -1,15 +1,33 @@
+'use client'
+
 import Link from 'next/link'
 import { House } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import PageMenu from '@/components/PageMenu'
 import UserMenu from '@/components/UserMenu'
-import LockedContent from '@/components/LockedContent'
+import { SquareLock } from '@/components/icons/LockIcons'
+import { supabase } from '@/lib/supabaseClient'
+
+const SECTIONS = [
+  { title: 'Eventi', desc: 'Sagre, mercati e appuntamenti nel territorio.' },
+  { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di luoghi e storie da scoprire.' },
+  // nascosti per ora, non ancora pronti:
+  // { title: 'Dove dormire', desc: 'Agriturismi e B&B che consigliamo.' },
+  // { title: 'Dove mangiare', desc: 'Ristoranti e trattorie del territorio.' },
+]
 
 export default function ViviIlMonferrato() {
-  const sections = [
-    { title: 'Eventi', desc: 'Sagre, mercati e appuntamenti nel territorio.' },
-    { title: 'Dove dormire', desc: 'Agriturismi e B&B che consigliamo.' },
-    { title: 'Dove mangiare', desc: 'Ristoranti e trattorie del territorio.' },
-  ]
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  function handleCellClick() {
+    if (!session) window.dispatchEvent(new CustomEvent('open-user-menu'))
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -26,19 +44,25 @@ export default function ViviIlMonferrato() {
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
-          Eventi, luoghi dove dormire e dove mangiare, scelti da chi il Monferrato lo vive ogni giorno.
+          Eventi e contenuti curati, scelti da chi il Monferrato lo vive ogni giorno.
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 pb-24 grid sm:grid-cols-3 gap-6">
-        {sections.map((s) => (
-          <LockedContent key={s.title}>
-            <div className="bg-white rounded-lg border border-black/5 p-6">
-              <h2 className="font-semibold text-neutral-800 mb-2">{s.title}</h2>
-              <p className="text-sm text-neutral-500 mb-4">{s.desc}</p>
-              <p className="text-xs text-neutral-400 italic">Contenuti in arrivo</p>
-            </div>
-          </LockedContent>
+      <div className="max-w-2xl mx-auto px-6 pb-24 grid sm:grid-cols-2 gap-6">
+        {SECTIONS.map((s) => (
+          <button
+            key={s.title}
+            onClick={handleCellClick}
+            className="relative text-left bg-white rounded-lg border border-black/5 p-6 hover:border-black/10 transition-colors"
+          >
+            {!session && (
+              <span className="absolute top-4 right-4">
+                <SquareLock size={16} color="#F2760E" strokeWidth={2} />
+              </span>
+            )}
+            <h2 className="font-semibold text-neutral-800 mb-2">{s.title}</h2>
+            <p className="text-sm text-neutral-500">{s.desc}</p>
+          </button>
         ))}
       </div>
     </main>

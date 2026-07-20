@@ -4,13 +4,13 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { House, ChevronDown, Search, Binoculars, Lock } from 'lucide-react'
+import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
+import { SquareLock, SquareLockOpen } from '@/components/icons/LockIcons'
 
 const ACCENT = '#F2760E'
 
-// Torre merlata — ispirata al riferimento del cliente
 function TowerIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
@@ -24,7 +24,6 @@ function TowerIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   )
 }
 
-// Capitello di colonna classica — disegno originale
 function ColumnCapitalIcon({ size = 16, color = 'currentColor', strokeWidth = 2 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color}
@@ -38,6 +37,9 @@ function ColumnCapitalIcon({ size = 16, color = 'currentColor', strokeWidth = 2 
     </svg>
   )
 }
+
+const HEART_OUTLINE = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
+const HEART_FILLED = `<svg width="18" height="18" viewBox="0 0 24 24" fill="${ACCENT}" stroke="${ACCENT}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
 
 const MONFERRATO_BOUNDS = [
   [7.85, 44.55],
@@ -134,7 +136,9 @@ function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLaye
                 style={{ color: layer === opt.key ? ACCENT : isLockedForUser ? '#b0b0b0' : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
               >
                 {opt.label}
-                {isLockedForUser && <Lock size={13} color="#b0b0b0" />}
+                {opt.locked && (isLockedForUser
+                  ? <SquareLock size={14} color="#b0b0b0" strokeWidth={2} />
+                  : <SquareLockOpen size={14} color={ACCENT} strokeWidth={2} />)}
               </button>
             )
           })}
@@ -207,6 +211,8 @@ export default function MapMonferrato() {
   const mapRef = useRef(null)
   const markersRef = useRef({})
   const barRef = useRef(null)
+  const router = useRouter()
+  const pathname = usePathname()
 
   const [layer, setLayer] = useState('realistico')
   const [pois, setPois] = useState([])
@@ -222,8 +228,6 @@ export default function MapMonferrato() {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => setSession(newSession))
     return () => listener.subscription.unsubscribe()
   }, [])
-  const router = useRouter()
-  const pathname = usePathname()
 
   useEffect(() => {
     async function loadPois() {
@@ -264,14 +268,10 @@ export default function MapMonferrato() {
     const resizeObserver = new ResizeObserver(() => map.resize())
     resizeObserver.observe(mapContainer.current)
 
-    // fix: quando si scorre dalla hero e la sezione mappa entra in vista,
-    // forza mappa e canvas a ridisegnarsi subito invece di aspettare un'interazione
     const intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            map.resize()
-          }
+          if (entry.isIntersecting) map.resize()
         })
       },
       { threshold: 0.1 }
@@ -310,6 +310,34 @@ export default function MapMonferrato() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  async function checkFavorite(poiId) {
+    if (!session) return false
+    const { data } = await supabase
+      .from('favorites')
+      .select('id')
+      .eq('poi_id', poiId)
+      .eq('user_id', session.user.id)
+      .maybeSingle()
+    return !!data
+  }
+
+  async function toggleFavorite(poiId, btnEl) {
+    if (!session) {
+      window.dispatchEvent(new CustomEvent('open-user-menu'))
+      return
+    }
+    const isFav = btnEl.dataset.fav === 'true'
+    if (isFav) {
+      await supabase.from('favorites').delete().eq('poi_id', poiId).eq('user_id', session.user.id)
+      btnEl.dataset.fav = 'false'
+      btnEl.innerHTML = HEART_OUTLINE
+    } else {
+      await supabase.from('favorites').insert({ poi_id: poiId, user_id: session.user.id })
+      btnEl.dataset.fav = 'true'
+      btnEl.innerHTML = HEART_FILLED
+    }
+  }
+
   function renderMarkers() {
     const map = mapRef.current
     if (!map) return
@@ -320,7 +348,8 @@ export default function MapMonferrato() {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
       const popupHtml = `
-        <div style="width:220px;font-family:sans-serif;">
+        <div style="width:220px;font-family:sans-serif;position:relative;">
+          <div style="position:absolute;top:6px;right:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;" id="fav-btn-${poi.id}"></div>
           <div style="height:110px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
             foto in arrivo
           </div>
@@ -344,6 +373,16 @@ export default function MapMonferrato() {
           sessionStorage.setItem('tim_session', sessionId)
         }
         supabase.from('poi_clicks').insert({ poi_id: poi.id, source: 'map', session_id: sessionId })
+
+        const btn = document.getElementById(`fav-btn-${poi.id}`)
+        if (btn) {
+          btn.innerHTML = HEART_OUTLINE
+          checkFavorite(poi.id).then((isFav) => {
+            btn.dataset.fav = isFav ? 'true' : 'false'
+            btn.innerHTML = isFav ? HEART_FILLED : HEART_OUTLINE
+          })
+          btn.onclick = () => toggleFavorite(poi.id, btn)
+        }
       })
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([poi.lng, poi.lat])
@@ -356,7 +395,7 @@ export default function MapMonferrato() {
   useEffect(() => {
     if (!mapReady) return
     renderMarkers()
-  }, [activeCats, pois, mapReady])
+  }, [activeCats, pois, mapReady, session])
 
   function switchLayer(key) {
     setLayer(key)
@@ -416,8 +455,7 @@ export default function MapMonferrato() {
     <div style={{ position: 'absolute', inset: 0 }}>
       <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
 
-      <div ref={barRef} className="absolute top-0 left-0 right-0 z-30 bg-white/65 backdrop-blur-lg">
-
+      <div ref={barRef} className="absolute top-0 left-0 right-0 z-20 bg-white/65 backdrop-blur-lg">
         <div className="hidden md:flex items-center px-4 h-16 gap-4">
           <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0">
             <House size={19} strokeWidth={2} color="#404040" />
@@ -443,7 +481,6 @@ export default function MapMonferrato() {
         </div>
       </div>
 
-      {/* pillole filtro fluttuanti, solo mobile — sotto la barra, equidistanti */}
       <div className="flex md:hidden justify-evenly gap-2 absolute left-3 right-3 top-[70px] z-20">
         {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
           const Icon = CATEGORY_ICON[cat]
