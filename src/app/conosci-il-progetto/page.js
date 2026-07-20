@@ -65,11 +65,11 @@ export default function ConosciIlProgetto() {
             <div className="w-24 h-24 rounded-full bg-neutral-200 mb-3 flex items-center justify-center text-neutral-400 text-xs">
               foto
             </div>
-</p>
             <p className="font-semibold text-neutral-800 text-sm">Emanuele</p>
             <p className="text-xs text-neutral-500">Co-founder</p>
           </div>
-<h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>
+	</p>
+	<h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>
           Sostieni il progetto
         </h2>
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word]">
