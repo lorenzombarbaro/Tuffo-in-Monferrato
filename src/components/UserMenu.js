@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { User, X, ChevronDown } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -19,6 +20,7 @@ function HeartIcon({ size = 14, color = 'currentColor' }) {
 
 export default function UserMenu({ light = false, hideButton = false }) {
   const [session, setSession] = useState(null)
+  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
@@ -33,6 +35,7 @@ export default function UserMenu({ light = false, hideButton = false }) {
   const panelRef = useRef(null)
 
   useEffect(() => {
+    setMounted(true)
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
     const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
@@ -118,7 +121,7 @@ export default function UserMenu({ light = false, hideButton = false }) {
         </button>
       )}
 
-      {open && (
+      {open && mounted && createPortal(
         <div className="fixed inset-0 z-50 bg-black/30">
           <div ref={panelRef} className="absolute top-0 right-0 h-full w-full max-w-[340px] bg-white shadow-2xl p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
@@ -240,7 +243,8 @@ export default function UserMenu({ light = false, hideButton = false }) {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

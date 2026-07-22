@@ -201,6 +201,28 @@ export default function MapMonferrato() {
   const [session, setSession] = useState(null)
 
   useEffect(() => {
+    window.openPhotoLightbox = function (url) {
+      let overlay = document.getElementById('tim-lightbox')
+      if (!overlay) {
+        overlay = document.createElement('div')
+        overlay.id = 'tim-lightbox'
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;cursor:zoom-out;'
+        overlay.onclick = function (e) {
+          if (e.target === overlay) overlay.style.display = 'none'
+        }
+        document.body.appendChild(overlay)
+      }
+      overlay.innerHTML =
+        '<img src="' + url + '" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:6px;" />' +
+        '<button onclick="document.getElementById(\'tim-lightbox\').style.display=\'none\'" ' +
+        'style="position:fixed;top:20px;left:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.25);' +
+        'backdrop-filter:blur(6px);border:none;color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>'
+      overlay.style.display = 'flex'
+    }
+    return () => { delete window.openPhotoLightbox }
+  }, [])
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
     const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
@@ -307,7 +329,7 @@ export default function MapMonferrato() {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
       const photoInner = poi.cover_image_url
-        ? `<img src="${poi.cover_image_url}" alt="${poi.name}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;" />`
+        ? `<img src="${poi.cover_image_url}" alt="${poi.name}" onclick="window.openPhotoLightbox && window.openPhotoLightbox('${poi.cover_image_url}')" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;cursor:zoom-in;" />`
         : `<div style="width:100%;height:100%;background:#e5e1d8;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">foto in arrivo</div>`
 
       const popupHtml = `
@@ -315,7 +337,7 @@ export default function MapMonferrato() {
           <div style="height:36px;position:relative;">
             <div id="fav-btn-${poi.id}" style="position:absolute;top:7px;right:8px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"></div>
           </div>
-          <div style="padding:0 8px;">
+          <div style="padding:0 12px;">
             <div style="width:100%;height:104px;">
               ${photoInner}
             </div>
