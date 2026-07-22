@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { User, X, ChevronDown } from 'lucide-react'
+import { User, X, ChevronDown, Megaphone } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
@@ -20,8 +20,8 @@ function HeartIcon({ size = 14, color = 'currentColor' }) {
 
 export default function UserMenu({ light = false, hideButton = false }) {
   const [session, setSession] = useState(null)
-  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -56,8 +56,28 @@ export default function UserMenu({ light = false, hideButton = false }) {
   }, [])
 
   useEffect(() => {
-    if (open && session) loadUserData()
-  }, [open, session])
+    if (session) loadUserData()
+  }, [session])
+
+  // aggiornamento in tempo reale: appena arriva una nuova segnalazione con la
+  // stessa email dell'utente collegato, la aggiungiamo subito alla lista
+  useEffect(() => {
+    if (!session) return
+    const channel = supabase
+      .channel(`user-messages-${session.user.id}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages', filter: `email=eq.${session.user.email}` },
+        (payload) => {
+          setReports((prev) => [...prev, payload.new])
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [session])
 
   async function loadUserData() {
     const [favRes, msgRes] = await Promise.all([
@@ -107,6 +127,135 @@ export default function UserMenu({ light = false, hideButton = false }) {
   })
   Object.keys(grouped).forEach((cat) => grouped[cat].sort((a, b) => a.localeCompare(b)))
 
+  const panel = (
+    <div className="fixed inset-0 z-50 bg-black/30">
+      <div ref={panelRef} className="absolute top-0 right-0 h-full w-full max-w-[340px] bg-white shadow-2xl p-6 overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <span className="font-hero italic text-lg text-neutral-800">Il tuo profilo</span>
+          <button onClick={() => setOpen(false)} className="text-neutral-400 hover:text-neutral-700">
+            <X size={20} />
+          </button>
+        </div>
+
+        {isLoggedIn ? (
+          <div>
+            <p className="text-sm text-neutral-500 mb-1">Hai effettuato l'accesso come</p>
+            <p className="text-sm font-medium text-neutral-800 mb-6">{session.user.email}</p>
+
+            {/* LUOGHI DEL CUORE */}
+            <div className="border-t border-black/5 pt-3 mb-2">
+              <button onClick={() => setFavOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
+                <span className="flex items-center gap-2 text-sm font-semibold" style={{ color: ACCENT }}>
+                  <HeartIcon size={14} color={ACCENT} />
+                  Luoghi del cuore
+                </span>
+                <ChevronDown size={15} className={`text-neutral-400 transition-transform ${favOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {favOpen && (
+                <div className="pt-2 pb-1">
+                  {Object.keys(grouped).length === 0 ? (
+                    <p className="text-xs text-neutral-400">
+                      Nessun luogo salvato ancora — clicca il cuoricino su un POI della mappa per aggiungerlo qui.
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      {CATEGORY_ORDER.filter((cat) => grouped[cat]).map((cat) => (
+                        <div key={cat}>
+                          <div className="text-xs uppercase tracking-wide text-neutral-400 font-medium mb-1">
+                            {CATEGORY_LABEL[cat]}
+                          </div>
+                          <ul className="text-sm text-neutral-700 space-y-0.5">
+                            {grouped[cat].map((name) => <li key={name}>{name}</li>)}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* LE MIE SEGNALAZIONI */}
+            <div className="border-t border-black/5 pt-3 mb-6">
+              <button onClick={() => setReportsOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
+                <span className="flex items-center gap-2 text-sm font-semibold" style={{ color: ACCENT }}>
+                  <Megaphone size={14} color={ACCENT} />
+                  Le mie segnalazioni
+                </span>
+                <ChevronDown size={15} className={`text-neutral-400 transition-transform ${reportsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {reportsOpen && (
+                <div className="pt-2 pb-1">
+                  {reports.length === 0 ? (
+                    <p className="text-xs text-neutral-400">Non hai ancora inviato segnalazioni.</p>
+                  ) : (
+                    <ul className="space-y-2">
+                      {reports.map((r) => (
+                        <li key={r.id} className="text-sm">
+                          <span className="text-xs text-neutral-400 block">
+                            {new Date(r.created_at).toLocaleDateString('it-IT')}
+                          </span>
+                          <span className="text-neutral-700">{r.body}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="w-full text-sm font-medium text-neutral-600 border border-black/10 rounded-full py-2.5 hover:bg-black/5 transition-colors"
+            >
+              Esci
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="flex gap-2 mb-6">
+              <button
+                onClick={() => { setMode('login'); setError(null); setInfo(null) }}
+                className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
+                style={{ background: mode === 'login' ? `${ACCENT}18` : 'transparent', color: mode === 'login' ? ACCENT : '#8a8a8a' }}
+              >
+                Accedi
+              </button>
+              <button
+                onClick={() => { setMode('signup'); setError(null); setInfo(null) }}
+                className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
+                style={{ background: mode === 'signup' ? `${ACCENT}18` : 'transparent', color: mode === 'signup' ? ACCENT : '#8a8a8a' }}
+              >
+                Registrati
+              </button>
+            </div>
+
+            <form onSubmit={mode === 'login' ? handleLogin : handleSignup} className="space-y-4">
+              <div>
+                <label className="block text-xs text-neutral-500 mb-1">Email</label>
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
+              </div>
+              <div>
+                <label className="block text-xs text-neutral-500 mb-1">Password</label>
+                <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
+              </div>
+
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              {info && <p className="text-sm text-green-600">{info}</p>}
+
+              <button type="submit" disabled={loading}
+                className="w-full bg-[#F2760E] text-white text-sm font-medium py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50">
+                {loading ? 'Attendere...' : mode === 'login' ? 'Accedi' : 'Crea account'}
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <>
       {!hideButton && (
@@ -121,131 +270,7 @@ export default function UserMenu({ light = false, hideButton = false }) {
         </button>
       )}
 
-      {open && mounted && createPortal(
-        <div className="fixed inset-0 z-50 bg-black/30">
-          <div ref={panelRef} className="absolute top-0 right-0 h-full w-full max-w-[340px] bg-white shadow-2xl p-6 overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <span className="font-hero italic text-lg text-neutral-800">Il tuo profilo</span>
-              <button onClick={() => setOpen(false)} className="text-neutral-400 hover:text-neutral-700">
-                <X size={20} />
-              </button>
-            </div>
-
-            {isLoggedIn ? (
-              <div>
-                <p className="text-sm text-neutral-500 mb-1">Hai effettuato l'accesso come</p>
-                <p className="text-sm font-medium text-neutral-800 mb-6">{session.user.email}</p>
-
-                {/* LUOGHI DEL CUORE — comprimibile */}
-                <div className="border-t border-black/5 pt-3 mb-2">
-                  <button onClick={() => setFavOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
-                    <span className="flex items-center gap-2 text-sm font-semibold text-neutral-700">
-                      Luoghi del cuore <HeartIcon size={14} color="#404040" />
-                    </span>
-                    <ChevronDown size={15} className={`text-neutral-400 transition-transform ${favOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {favOpen && (
-                    <div className="pt-2 pb-1">
-                      {Object.keys(grouped).length === 0 ? (
-                        <p className="text-xs text-neutral-400">
-                          Nessun luogo salvato ancora — clicca il cuoricino su un POI della mappa per aggiungerlo qui.
-                        </p>
-                      ) : (
-                        <div className="space-y-3">
-                          {CATEGORY_ORDER.filter((cat) => grouped[cat]).map((cat) => (
-                            <div key={cat}>
-                              <div className="text-xs uppercase tracking-wide text-neutral-400 font-medium mb-1">
-                                {CATEGORY_LABEL[cat]}
-                              </div>
-                              <ul className="text-sm text-neutral-700 space-y-0.5">
-                                {grouped[cat].map((name) => <li key={name}>{name}</li>)}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* LE MIE SEGNALAZIONI — comprimibile */}
-                <div className="border-t border-black/5 pt-3 mb-6">
-                  <button onClick={() => setReportsOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
-                    <span className="text-sm font-semibold text-neutral-700">Le mie segnalazioni</span>
-                    <ChevronDown size={15} className={`text-neutral-400 transition-transform ${reportsOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {reportsOpen && (
-                    <div className="pt-2 pb-1">
-                      {reports.length === 0 ? (
-                        <p className="text-xs text-neutral-400">Non hai ancora inviato segnalazioni.</p>
-                      ) : (
-                        <ul className="space-y-2">
-                          {reports.map((r) => (
-                            <li key={r.id} className="text-sm">
-                              <span className="text-xs text-neutral-400 block">
-                                {new Date(r.created_at).toLocaleDateString('it-IT')}
-                              </span>
-                              <span className="text-neutral-700">{r.body}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-sm font-medium text-neutral-600 border border-black/10 rounded-full py-2.5 hover:bg-black/5 transition-colors"
-                >
-                  Esci
-                </button>
-              </div>
-            ) : (
-              <div>
-                <div className="flex gap-2 mb-6">
-                  <button
-                    onClick={() => { setMode('login'); setError(null); setInfo(null) }}
-                    className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
-                    style={{ background: mode === 'login' ? `${ACCENT}18` : 'transparent', color: mode === 'login' ? ACCENT : '#8a8a8a' }}
-                  >
-                    Accedi
-                  </button>
-                  <button
-                    onClick={() => { setMode('signup'); setError(null); setInfo(null) }}
-                    className="flex-1 text-sm font-medium py-2 rounded-full transition-colors"
-                    style={{ background: mode === 'signup' ? `${ACCENT}18` : 'transparent', color: mode === 'signup' ? ACCENT : '#8a8a8a' }}
-                  >
-                    Registrati
-                  </button>
-                </div>
-
-                <form onSubmit={mode === 'login' ? handleLogin : handleSignup} className="space-y-4">
-                  <div>
-                    <label className="block text-xs text-neutral-500 mb-1">Email</label>
-                    <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-neutral-500 mb-1">Password</label>
-                    <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
-                      className="w-full border border-black/10 rounded-md px-3 py-2 text-sm outline-none focus:border-[#F2760E]" />
-                  </div>
-
-                  {error && <p className="text-sm text-red-600">{error}</p>}
-                  {info && <p className="text-sm text-green-600">{info}</p>}
-
-                  <button type="submit" disabled={loading}
-                    className="w-full bg-[#F2760E] text-white text-sm font-medium py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50">
-                    {loading ? 'Attendere...' : mode === 'login' ? 'Accedi' : 'Crea account'}
-                  </button>
-                </form>
-              </div>
-            )}
-          </div>
-        </div>,
-        document.body
-      )}
+      {open && mounted && createPortal(panel, document.body)}
     </>
   )
 }
