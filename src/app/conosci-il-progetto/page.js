@@ -76,7 +76,7 @@ export default function ConosciIlProgetto() {
           Se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti questa missione, ogni contributo è prezioso.
         </p>
         <div className="text-center">
-          <a href="INCOLLA-QUI-IL-TUO-LINK-STRIPE" target="_blank" rel="noopener noreferrer"
+          <a href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00" target="_blank" rel="noopener noreferrer"
             className="inline-block bg-[#F2760E] text-white text-sm font-medium px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
             Sostieni Tuffo in Monferrato con una donazione
           </a>
