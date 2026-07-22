@@ -63,8 +63,15 @@ export default function UserMenu({ light = false, hideButton = false }) {
   // stessa email dell'utente collegato, la aggiungiamo subito alla lista
   useEffect(() => {
     if (!session) return
+    const channelName = `user-messages-${session.user.id}`
+
+    // se un canale con lo stesso nome esiste gia' (capita con i doppi render
+    // di sviluppo di React), lo rimuoviamo prima di aprirne uno nuovo
+    const existing = supabase.getChannels().find((ch) => ch.topic === `realtime:${channelName}`)
+    if (existing) supabase.removeChannel(existing)
+
     const channel = supabase
-      .channel(`user-messages-${session.user.id}`)
+      .channel(channelName)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `email=eq.${session.user.email}` },
