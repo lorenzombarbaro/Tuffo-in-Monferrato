@@ -48,7 +48,7 @@ export default function ViviIlMonferrato() {
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 pb-24 grid sm:grid-cols-2 gap-6">
+      <div className="max-w-md mx-auto px-6 pb-24 flex flex-col gap-4">
         {SECTIONS.map((s) => (
           <button
             key={s.title}

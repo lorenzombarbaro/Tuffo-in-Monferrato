@@ -7,7 +7,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import { SquareLock, SquareLockOpen } from '@/components/icons/LockIcons'
+import { SquareLock } from '@/components/icons/LockIcons'
 
 const ACCENT = '#F2760E'
 
@@ -41,10 +41,7 @@ function ColumnCapitalIcon({ size = 16, color = 'currentColor', strokeWidth = 2 
 const HEART_OUTLINE = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
 const HEART_FILLED = `<svg width="18" height="18" viewBox="0 0 24 24" fill="${ACCENT}" stroke="${ACCENT}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
 
-const MONFERRATO_BOUNDS = [
-  [7.85, 44.55],
-  [8.75, 45.25],
-]
+const MONFERRATO_BOUNDS = [[7.85, 44.55], [8.75, 45.25]]
 
 const STYLES = {
   realistico: {
@@ -75,18 +72,8 @@ const LAYER_OPTIONS = [
   { key: 'pianta', label: 'Amministrativa', locked: true },
 ]
 
-const CATEGORY_LABEL = {
-  borgo: 'Borghi',
-  cultura: 'Attrazioni',
-  panorama: 'Punti panoramici',
-}
-
-const CATEGORY_ICON = {
-  borgo: TowerIcon,
-  cultura: ColumnCapitalIcon,
-  panorama: Binoculars,
-}
-
+const CATEGORY_LABEL = { borgo: 'Borghi', cultura: 'Attrazioni', panorama: 'Punti panoramici' }
+const CATEGORY_ICON = { borgo: TowerIcon, cultura: ColumnCapitalIcon, panorama: Binoculars }
 const SHOW_BUSINESS_FILTER = false
 
 function buildPinElement(category) {
@@ -136,9 +123,7 @@ function ViewDropdown({ layer, viewDropdownOpen, setViewDropdownOpen, switchLaye
                 style={{ color: layer === opt.key ? ACCENT : isLockedForUser ? '#b0b0b0' : '#404040', fontWeight: layer === opt.key ? 600 : 400 }}
               >
                 {opt.label}
-                {opt.locked && (isLockedForUser
-                  ? <SquareLock size={14} color="#b0b0b0" strokeWidth={2} />
-                  : <SquareLockOpen size={14} color={ACCENT} strokeWidth={2} />)}
+                {isLockedForUser && <SquareLock size={14} color="#b0b0b0" strokeWidth={2} />}
               </button>
             )
           })}
@@ -156,23 +141,17 @@ function SearchBox({ searchQuery, setSearchQuery, searchOpen, setSearchOpen, sea
         type="text"
         value={searchQuery}
         onFocus={() => setSearchOpen(true)}
-        onChange={(e) => {
-          setSearchQuery(e.target.value)
-          setSearchOpen(true)
-        }}
+        onChange={(e) => { setSearchQuery(e.target.value); setSearchOpen(true) }}
         placeholder="Cerca..."
         className="text-sm bg-white/70 rounded-full pl-9 pr-4 py-2 outline-none border border-black/5 w-full sm:w-44 sm:focus:w-56 transition-all"
       />
       {searchOpen && searchResults.length > 0 && (
-        <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden z-30">
+        <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-black/5 py-1.5 min-w-[220px] overflow-hidden z-40">
           {searchResults.map((poi) => {
             const Icon = CATEGORY_ICON[poi.category_id] || TowerIcon
             return (
-              <button
-                key={poi.id}
-                onClick={() => goToPoi(poi)}
-                className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 flex items-center gap-2 text-neutral-700"
-              >
+              <button key={poi.id} onClick={() => goToPoi(poi)}
+                className="w-full text-left text-sm px-4 py-2.5 hover:bg-black/5 flex items-center gap-2 text-neutral-700">
                 <Icon size={14} color={ACCENT} />
                 {poi.name}
               </button>
@@ -191,12 +170,9 @@ function CategoryPills({ activeCats, toggleCategory, compact }) {
         const Icon = CATEGORY_ICON[cat]
         const active = activeCats.has(cat)
         return (
-          <button
-            key={cat}
-            onClick={() => toggleCategory(cat)}
+          <button key={cat} onClick={() => toggleCategory(cat)}
             className={`flex items-center gap-1.5 rounded-full font-medium text-neutral-700 transition-all shrink-0 ${compact ? 'px-2.5 py-1.5 text-xs' : 'px-3 py-2 text-sm'}`}
-            style={{ background: active ? `${ACCENT}18` : 'transparent' }}
-          >
+            style={{ background: active ? `${ACCENT}18` : 'transparent' }}>
             <Icon size={compact ? 15 : 17} strokeWidth={2} color={active ? ACCENT : '#9a9a9a'} />
             {label}
           </button>
@@ -225,20 +201,14 @@ export default function MapMonferrato() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => setSession(newSession))
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
   }, [])
 
   useEffect(() => {
     async function loadPois() {
-      const { data, error } = await supabase
-        .from('poi')
-        .select('id, name, category_id, lat, lng, short_desc')
-        .eq('is_published', true)
-      if (error) {
-        console.error('Errore caricamento POI:', error.message)
-        return
-      }
+      const { data, error } = await supabase.from('poi').select('id, name, category_id, lat, lng, short_desc').eq('is_published', true)
+      if (error) { console.error('Errore caricamento POI:', error.message); return }
       setPois(data || [])
     }
     loadPois()
@@ -268,14 +238,9 @@ export default function MapMonferrato() {
     const resizeObserver = new ResizeObserver(() => map.resize())
     resizeObserver.observe(mapContainer.current)
 
-    const intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) map.resize()
-        })
-      },
-      { threshold: 0.1 }
-    )
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) map.resize() })
+    }, { threshold: 0.1 })
     intersectionObserver.observe(mapContainer.current)
 
     return () => {
@@ -295,9 +260,7 @@ export default function MapMonferrato() {
     }
   }
 
-  useEffect(() => {
-    applyCanvasFilter(layer)
-  }, [layer])
+  useEffect(() => { applyCanvasFilter(layer) }, [layer])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -312,12 +275,7 @@ export default function MapMonferrato() {
 
   async function checkFavorite(poiId) {
     if (!session) return false
-    const { data } = await supabase
-      .from('favorites')
-      .select('id')
-      .eq('poi_id', poiId)
-      .eq('user_id', session.user.id)
-      .maybeSingle()
+    const { data } = await supabase.from('favorites').select('id').eq('poi_id', poiId).eq('user_id', session.user.id).maybeSingle()
     return !!data
   }
 
@@ -348,18 +306,17 @@ export default function MapMonferrato() {
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
       const popupHtml = `
-        <div style="width:220px;font-family:sans-serif;position:relative;">
-          <div style="position:absolute;top:6px;right:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;" id="fav-btn-${poi.id}"></div>
-          <div style="height:110px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
+        <div style="width:220px;font-family:sans-serif;">
+          <div style="position:relative;height:110px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
             foto in arrivo
+            <div id="fav-btn-${poi.id}" style="position:absolute;top:8px;right:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;background:rgba(255,255,255,0.75);border-radius:50%;"></div>
           </div>
           <div style="padding:10px 12px;">
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:${ACCENT};font-weight:600;margin-bottom:2px;">${CATEGORY_LABEL[poi.category_id] || ''}</div>
             <div style="font-weight:700;font-size:15px;margin-bottom:4px;">${poi.name}</div>
             <div style="font-size:12.5px;color:#555;line-height:1.4;margin-bottom:10px;">${poi.short_desc || ''}</div>
             <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer"
-               style="display:block;text-align:center;background:${ACCENT};color:white;font-size:12.5px;
-                      font-weight:600;padding:8px;border-radius:6px;text-decoration:none;">
+               style="display:block;text-align:center;background:${ACCENT};color:white;font-size:12.5px;font-weight:600;padding:8px;border-radius:6px;text-decoration:none;">
               Portami qui
             </a>
           </div>
@@ -384,10 +341,7 @@ export default function MapMonferrato() {
           btn.onclick = () => toggleFavorite(poi.id, btn)
         }
       })
-      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-        .setLngLat([poi.lng, poi.lat])
-        .setPopup(popup)
-        .addTo(map)
+      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([poi.lng, poi.lat]).setPopup(popup).addTo(map)
       markersRef.current[poi.id] = marker
     })
   }
@@ -432,30 +386,23 @@ export default function MapMonferrato() {
   function goToPoi(poi) {
     const map = mapRef.current
     if (!map) return
-    if (!activeCats.has(poi.category_id)) {
-      setActiveCats((prev) => new Set(prev).add(poi.category_id))
-    }
+    if (!activeCats.has(poi.category_id)) setActiveCats((prev) => new Set(prev).add(poi.category_id))
     map.flyTo({ center: [poi.lng, poi.lat], zoom: 14, pitch: 55, duration: 1400 })
-    setTimeout(() => {
-      markersRef.current[poi.id]?.togglePopup()
-    }, 1450)
+    setTimeout(() => { markersRef.current[poi.id]?.togglePopup() }, 1450)
     setSearchQuery('')
     setSearchOpen(false)
   }
 
   function goHome() {
-    if (pathname === '/') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      router.push('/')
-    }
+    if (pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' })
+    else router.push('/')
   }
 
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
 
-      <div ref={barRef} className="absolute top-0 left-0 right-0 z-20 bg-white/65 backdrop-blur-lg">
+      <div ref={barRef} className="absolute top-0 left-0 right-0 z-30 bg-white/65 backdrop-blur-lg">
         <div className="hidden md:flex items-center px-4 h-16 gap-4">
           <button onClick={goHome} title="Torna alla home" className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors shrink-0">
             <House size={19} strokeWidth={2} color="#404040" />
@@ -464,9 +411,7 @@ export default function MapMonferrato() {
             <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} session={session} />
             <CategoryPills activeCats={activeCats} toggleCategory={toggleCategory} />
             {SHOW_BUSINESS_FILTER && (
-              <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">
-                Aziende
-              </button>
+              <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium text-neutral-500 hover:bg-black/5 transition-colors">Aziende</button>
             )}
             <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
           </div>
@@ -486,12 +431,9 @@ export default function MapMonferrato() {
           const Icon = CATEGORY_ICON[cat]
           const active = activeCats.has(cat)
           return (
-            <button
-              key={cat}
-              onClick={() => toggleCategory(cat)}
+            <button key={cat} onClick={() => toggleCategory(cat)}
               className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium shadow-md bg-white/65 backdrop-blur-lg transition-all flex-1"
-              style={{ background: active ? `${ACCENT}CC` : 'rgba(255,255,255,0.65)' }}
-            >
+              style={{ background: active ? `${ACCENT}CC` : 'rgba(255,255,255,0.65)' }}>
               <Icon size={14} strokeWidth={2} color={active ? '#ffffff' : '#9a9a9a'} />
               <span className="text-center" style={{ color: active ? '#ffffff' : '#404040' }}>{label}</span>
             </button>

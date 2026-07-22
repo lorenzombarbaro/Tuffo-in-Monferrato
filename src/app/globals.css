@@ -76,11 +76,14 @@ html, body {
 
 
 .maplibregl-popup-close-button {
-  left: 6px;
+  left: 8px;
   right: auto !important;
-  top: 6px;
+  top: 8px;
   color: #F2760E !important;
-  font-size: 18px !important;
-  width: 22px;
-  height: 22px;
+  font-size: 20px !important;
+  width: 24px;
+  height: 24px;
+  background: rgba(255,255,255,0.75) !important;
+  border-radius: 50% !important;
+  z-index: 10;
 }

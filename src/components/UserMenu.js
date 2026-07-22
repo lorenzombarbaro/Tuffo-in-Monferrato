@@ -1,19 +1,23 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { User, X } from 'lucide-react'
+import { User, X, ChevronDown } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 
 const ACCENT = '#F2760E'
 
-const CATEGORY_LABEL = {
-  borgo: 'Borghi',
-  cultura: 'Attrazioni',
-  panorama: 'Punti panoramici',
-}
+const CATEGORY_LABEL = { borgo: 'Borghi', cultura: 'Attrazioni', panorama: 'Punti panoramici' }
 const CATEGORY_ORDER = ['borgo', 'cultura', 'panorama']
 
-export default function UserMenu({ light = false }) {
+function HeartIcon({ size = 14, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    </svg>
+  )
+}
+
+export default function UserMenu({ light = false, hideButton = false }) {
   const [session, setSession] = useState(null)
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState('login')
@@ -23,14 +27,14 @@ export default function UserMenu({ light = false }) {
   const [info, setInfo] = useState(null)
   const [loading, setLoading] = useState(false)
   const [favorites, setFavorites] = useState([])
-  const [favLoading, setFavLoading] = useState(false)
+  const [reports, setReports] = useState([])
+  const [favOpen, setFavOpen] = useState(false)
+  const [reportsOpen, setReportsOpen] = useState(false)
   const panelRef = useRef(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession)
-    })
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
   }, [])
 
@@ -49,17 +53,16 @@ export default function UserMenu({ light = false }) {
   }, [])
 
   useEffect(() => {
-    if (open && session) loadFavorites()
+    if (open && session) loadUserData()
   }, [open, session])
 
-  async function loadFavorites() {
-    setFavLoading(true)
-    const { data } = await supabase
-      .from('favorites')
-      .select('poi_id, poi(name, category_id)')
-      .eq('user_id', session.user.id)
-    setFavorites(data || [])
-    setFavLoading(false)
+  async function loadUserData() {
+    const [favRes, msgRes] = await Promise.all([
+      supabase.from('favorites').select('poi_id, poi(name, category_id)').eq('user_id', session.user.id),
+      supabase.from('messages').select('*').eq('email', session.user.email).order('created_at', { ascending: true }),
+    ])
+    setFavorites(favRes.data || [])
+    setReports(msgRes.data || [])
   }
 
   async function handleLogin(e) {
@@ -68,12 +71,8 @@ export default function UserMenu({ light = false }) {
     setError(null)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     setLoading(false)
-    if (error) {
-      setError('Email o password non corrette.')
-      return
-    }
-    setEmail('')
-    setPassword('')
+    if (error) { setError('Email o password non corrette.'); return }
+    setEmail(''); setPassword('')
   }
 
   async function handleSignup(e) {
@@ -83,13 +82,9 @@ export default function UserMenu({ light = false }) {
     setInfo(null)
     const { error } = await supabase.auth.signUp({ email, password })
     setLoading(false)
-    if (error) {
-      setError(error.message)
-      return
-    }
+    if (error) { setError(error.message); return }
     setInfo('Controlla la tua email per confermare la registrazione.')
-    setEmail('')
-    setPassword('')
+    setEmail(''); setPassword('')
   }
 
   async function handleLogout() {
@@ -111,17 +106,20 @@ export default function UserMenu({ light = false }) {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${light ? 'hover:bg-white/15' : 'hover:bg-black/5'}`}
-        style={{ background: open ? (light ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.05)') : 'transparent' }}
-        title="Il tuo profilo"
-      >
-        <User size={19} color={light ? '#ffffff' : '#404040'} strokeWidth={2} />
-      </button>
+      {!hideButton && (
+        <button
+          onClick={() => setOpen(true)}
+          className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+            open ? (light ? 'bg-white/15' : 'bg-black/5') : ''
+          } ${light ? 'hover:bg-white/15' : 'hover:bg-black/5'}`}
+          title="Il tuo profilo"
+        >
+          <User size={19} color={light ? '#ffffff' : '#404040'} strokeWidth={2} />
+        </button>
+      )}
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-black/30">
+        <div className="fixed inset-0 z-50 bg-black/30">
           <div ref={panelRef} className="absolute top-0 right-0 h-full w-full max-w-[340px] bg-white shadow-2xl p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <span className="font-hero italic text-lg text-neutral-800">Il tuo profilo</span>
@@ -135,29 +133,63 @@ export default function UserMenu({ light = false }) {
                 <p className="text-sm text-neutral-500 mb-1">Hai effettuato l'accesso come</p>
                 <p className="text-sm font-medium text-neutral-800 mb-6">{session.user.email}</p>
 
-                <h3 className="text-sm font-semibold text-neutral-700 mb-3">🧡 Luoghi del cuore</h3>
-                {favLoading ? (
-                  <p className="text-xs text-neutral-400 mb-6">Caricamento...</p>
-                ) : Object.keys(grouped).length === 0 ? (
-                  <p className="text-xs text-neutral-400 mb-6">
-                    Nessun luogo salvato ancora — clicca il cuoricino su un POI della mappa per aggiungerlo qui.
-                  </p>
-                ) : (
-                  <div className="mb-6 space-y-4">
-                    {CATEGORY_ORDER.filter((cat) => grouped[cat]).map((cat) => (
-                      <div key={cat}>
-                        <div className="text-xs uppercase tracking-wide text-neutral-400 font-medium mb-1">
-                          {CATEGORY_LABEL[cat]}
+                {/* LUOGHI DEL CUORE — comprimibile */}
+                <div className="border-t border-black/5 pt-3 mb-2">
+                  <button onClick={() => setFavOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-neutral-700">
+                      Luoghi del cuore <HeartIcon size={14} color="#404040" />
+                    </span>
+                    <ChevronDown size={15} className={`text-neutral-400 transition-transform ${favOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {favOpen && (
+                    <div className="pt-2 pb-1">
+                      {Object.keys(grouped).length === 0 ? (
+                        <p className="text-xs text-neutral-400">
+                          Nessun luogo salvato ancora — clicca il cuoricino su un POI della mappa per aggiungerlo qui.
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {CATEGORY_ORDER.filter((cat) => grouped[cat]).map((cat) => (
+                            <div key={cat}>
+                              <div className="text-xs uppercase tracking-wide text-neutral-400 font-medium mb-1">
+                                {CATEGORY_LABEL[cat]}
+                              </div>
+                              <ul className="text-sm text-neutral-700 space-y-0.5">
+                                {grouped[cat].map((name) => <li key={name}>{name}</li>)}
+                              </ul>
+                            </div>
+                          ))}
                         </div>
-                        <ul className="text-sm text-neutral-700 space-y-0.5">
-                          {grouped[cat].map((name) => (
-                            <li key={name}>{name}</li>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* LE MIE SEGNALAZIONI — comprimibile */}
+                <div className="border-t border-black/5 pt-3 mb-6">
+                  <button onClick={() => setReportsOpen((o) => !o)} className="w-full flex items-center justify-between py-1.5">
+                    <span className="text-sm font-semibold text-neutral-700">Le mie segnalazioni</span>
+                    <ChevronDown size={15} className={`text-neutral-400 transition-transform ${reportsOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {reportsOpen && (
+                    <div className="pt-2 pb-1">
+                      {reports.length === 0 ? (
+                        <p className="text-xs text-neutral-400">Non hai ancora inviato segnalazioni.</p>
+                      ) : (
+                        <ul className="space-y-2">
+                          {reports.map((r) => (
+                            <li key={r.id} className="text-sm">
+                              <span className="text-xs text-neutral-400 block">
+                                {new Date(r.created_at).toLocaleDateString('it-IT')}
+                              </span>
+                              <span className="text-neutral-700">{r.body}</span>
+                            </li>
                           ))}
                         </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      )}
+                    </div>
+                  )}
+                </div>
 
                 <button
                   onClick={handleLogout}
