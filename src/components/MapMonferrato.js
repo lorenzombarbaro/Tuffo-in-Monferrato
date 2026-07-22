@@ -208,7 +208,7 @@ export default function MapMonferrato() {
 
   useEffect(() => {
     async function loadPois() {
-      const { data, error } = await supabase.from('poi').select('id, name, category_id, lat, lng, short_desc').eq('is_published', true)
+      const { data, error } = await supabase.from('poi').select('id, name, category_id, lat, lng, short_desc, cover_image_url').eq('is_published', true)
       if (error) { console.error('Errore caricamento POI:', error.message); return }
       setPois(data || [])
     }
@@ -306,13 +306,19 @@ export default function MapMonferrato() {
       const el = buildPinElement(poi.category_id)
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}`
 
+      const photoInner = poi.cover_image_url
+        ? `<img src="${poi.cover_image_url}" alt="${poi.name}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;" />`
+        : `<div style="width:100%;height:100%;background:#e5e1d8;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">foto in arrivo</div>`
+
       const popupHtml = `
         <div style="width:220px;font-family:sans-serif;">
-          <div style="height:34px;position:relative;">
-            <div id="fav-btn-${poi.id}" style="position:absolute;top:6px;right:8px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"></div>
+          <div style="height:36px;position:relative;">
+            <div id="fav-btn-${poi.id}" style="position:absolute;top:7px;right:8px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"></div>
           </div>
-          <div style="height:100px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
-            foto in arrivo
+          <div style="padding:0 8px;">
+            <div style="width:100%;height:104px;">
+              ${photoInner}
+            </div>
           </div>
           <div style="padding:10px 12px;">
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:${ACCENT};font-weight:600;margin-bottom:2px;">${CATEGORY_LABEL[poi.category_id] || ''}</div>
