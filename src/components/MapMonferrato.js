@@ -8,6 +8,7 @@ import { House, ChevronDown, Search, Binoculars } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { SquareLock } from '@/components/icons/LockIcons'
+import UserMenu from '@/components/UserMenu'
 
 const ACCENT = '#F2760E'
 
@@ -307,9 +308,11 @@ export default function MapMonferrato() {
 
       const popupHtml = `
         <div style="width:220px;font-family:sans-serif;">
-          <div style="position:relative;height:110px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
+          <div style="height:34px;position:relative;">
+            <div id="fav-btn-${poi.id}" style="position:absolute;top:6px;right:8px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;"></div>
+          </div>
+          <div style="height:100px;background:#e5e1d8;border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">
             foto in arrivo
-            <div id="fav-btn-${poi.id}" style="position:absolute;top:8px;right:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;background:rgba(255,255,255,0.75);border-radius:50%;"></div>
           </div>
           <div style="padding:10px 12px;">
             <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:${ACCENT};font-weight:600;margin-bottom:2px;">${CATEGORY_LABEL[poi.category_id] || ''}</div>
@@ -415,6 +418,7 @@ export default function MapMonferrato() {
             )}
             <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
           </div>
+          <UserMenu />
         </div>
 
         <div className="flex md:hidden items-center px-3 h-14 gap-2">
@@ -423,6 +427,7 @@ export default function MapMonferrato() {
           </button>
           <ViewDropdown layer={layer} viewDropdownOpen={viewDropdownOpen} setViewDropdownOpen={setViewDropdownOpen} switchLayer={switchLayer} session={session} />
           <SearchBox searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchOpen={searchOpen} setSearchOpen={setSearchOpen} searchResults={searchResults} goToPoi={goToPoi} />
+          <UserMenu />
         </div>
       </div>
 
