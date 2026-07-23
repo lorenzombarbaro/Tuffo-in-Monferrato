@@ -71,7 +71,7 @@ export default function ConosciIlProgetto() {
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto mb-6">
           &ldquo;Tuffo in Monferrato&rdquo; nasce come iniziativa a costo zero. Grazie agli strumenti di ultima generazione siamo riusciti a creare una piattaforma senza l&apos uso di capitali,
 	tuttavia la gestione dei dati, la ricerca e lo sviluppo dei nuovi contenuti richiedono uno sforzo fisico ed economico considerevole.
-          Se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti quest&apos iniziativa, ogni contributo è prezioso.
+          Quindi se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti questa idea. Ogni contributo è prezioso!
         </p>
         <div className="text-center">
           <a href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00" target="_blank" rel="noopener noreferrer"
