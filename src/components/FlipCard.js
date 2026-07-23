@@ -10,7 +10,7 @@ export default function FlipCard({ title, summary, onReadMore }) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div style={{ perspective: '1000px', width: 150, height: 210 }}>
+      <div style={{ perspective: '1000px', width: 200, height: 290 }}>
         <div
           onClick={() => setFlipped((f) => !f)}
           style={{
@@ -29,13 +29,13 @@ export default function FlipCard({ title, summary, onReadMore }) {
               position: 'absolute',
               inset: 0,
               backfaceVisibility: 'hidden',
-              borderRadius: 14,
-              border: '7px solid white',
-              boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+              borderRadius: 16,
+              border: '8px solid white',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.18)',
               backgroundColor: '#fff',
               backgroundImage: `
-                repeating-linear-gradient(45deg, ${ACCENT}33 0, ${ACCENT}33 1.5px, transparent 1.5px, transparent 10px),
-                repeating-linear-gradient(-45deg, ${ACCENT}33 0, ${ACCENT}33 1.5px, transparent 1.5px, transparent 10px)
+                repeating-linear-gradient(45deg, ${ACCENT}55 0, ${ACCENT}55 1.5px, transparent 1.5px, transparent 5px),
+                repeating-linear-gradient(-45deg, ${ACCENT}55 0, ${ACCENT}55 1.5px, transparent 1.5px, transparent 5px)
               `,
             }}
           />
@@ -47,28 +47,29 @@ export default function FlipCard({ title, summary, onReadMore }) {
               inset: 0,
               backfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
-              borderRadius: 14,
-              border: '7px solid white',
-              boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+              borderRadius: 16,
+              border: '8px solid white',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.18)',
               backgroundColor: '#ffffff',
-              padding: '16px 14px',
+              padding: '18px 16px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
+              overflow: 'hidden',
             }}
           >
             <div>
-              <p style={{ fontWeight: 700, fontSize: 14, color: '#241B24', marginBottom: 6, lineHeight: 1.25 }}>
+              <p style={{ fontWeight: 700, fontSize: 15, color: '#241B24', marginBottom: 8, lineHeight: 1.25 }}>
                 {title}
               </p>
-              <p style={{ fontSize: 11.5, color: '#666', lineHeight: 1.45 }}>{summary}</p>
+              <p style={{ fontSize: 12.5, color: '#666', lineHeight: 1.5 }}>{summary}</p>
             </div>
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 onReadMore()
               }}
-              style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600, textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              style={{ color: ACCENT, fontSize: 13, fontWeight: 600, textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             >
               Visualizza contenuto →
             </button>

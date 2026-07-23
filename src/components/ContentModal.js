@@ -24,7 +24,7 @@ export default function ContentModal({ title, paragraphs, onClose }) {
         <h2 className="font-hero italic text-2xl md:text-3xl text-white mb-6">{title}</h2>
         <div className="space-y-4">
           {paragraphs.map((p, i) => (
-            <p key={i} className="text-white/90 leading-relaxed text-[15px]">{p}</p>
+            <p key={i} className="text-white/90 leading-relaxed text-[15px] text-justify [text-justify:inter-word] hyphens-auto">{p}</p>
           ))}
         </div>
       </div>
