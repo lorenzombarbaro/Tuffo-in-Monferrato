@@ -9,8 +9,8 @@ import { SquareLock } from '@/components/icons/LockIcons'
 import { supabase } from '@/lib/supabaseClient'
 
 const SECTIONS = [
-  { title: 'Eventi', desc: 'Sagre, mercati e appuntamenti nel territorio.' },
-  { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di luoghi e storie da scoprire.' },
+  { title: 'Eventi', desc: 'Partecipa agli appuntamenti del territorio per sentirti un vero monferrino.' },
+  { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di storie da scoprire.' },
   // nascosti per ora, non ancora pronti:
   // { title: 'Dove dormire', desc: 'Agriturismi e B&B che consigliamo.' },
   // { title: 'Dove mangiare', desc: 'Ristoranti e trattorie del territorio.' },
@@ -44,7 +44,7 @@ export default function ViviIlMonferrato() {
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
-          Eventi e contenuti curati, scelti da chi il Monferrato lo vive ogni giorno.
+          Eventi e contenuti scelti per darti un assaggio di autenticità.
         </p>
       </div>
 
