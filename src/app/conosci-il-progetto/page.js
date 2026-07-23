@@ -69,7 +69,7 @@ export default function ConosciIlProgetto() {
 
         <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>Sostieni il progetto</h2>
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto mb-6">
-          &ldquo;Tuffo in Monferrato&rdquo; nasce come iniziativa a costo zero. Grazie agli strumenti di ultima generazione siamo riusciti a creare una piattaforma senza l&apos uso di capitali,
+          &ldquo;Tuffo in Monferrato&rdquo; nasce come iniziativa a costo zero. Grazie agli strumenti di ultima generazione siamo riusciti a creare questa piattaforma senza ricorrere a capitali,
 	tuttavia la gestione dei dati, la ricerca e lo sviluppo dei nuovi contenuti richiedono uno sforzo fisico ed economico considerevole.
           Quindi se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti questa idea. Ogni contributo è prezioso!
         </p>
