@@ -68,7 +68,7 @@ export default function CarteScoperte() {
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-24 flex flex-wrap justify-center gap-10">
+      <div className="w-full px-6 md:px-[29px] pb-24 flex flex-wrap justify-center gap-10">
         {CARDS.map((card, i) => (
           <FlipCard
             key={card.title}
