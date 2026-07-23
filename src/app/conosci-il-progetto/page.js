@@ -29,7 +29,7 @@ export default function ConosciIlProgetto() {
             Chi è monferrino per nascita o per vocazione conosce bene il
             valore di questa terra: i paesaggi sconfinati, il buon vino e le passeggiate tra i vicoli dei
             nostri borghi ci fanno sentire vivi. Così abbiamo deciso di sfruttare le nuove possibilità
-            digitali per offrirvi un nuovo modo di esplorare il Monferrato.
+            digitali per offrirvi un modo alternativo di esplorare il Monferrato.
             <br /><br />
             Il turismo 4.0 pensato per
             raccontare gli scorci più veri e conquistarvi già dallo schermo attraverso la narrazione della mappa, il cuore pulsante del nostro progetto.
