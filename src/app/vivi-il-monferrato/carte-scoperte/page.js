@@ -60,15 +60,15 @@ export default function CarteScoperte() {
       </header>
 
       <div className="max-w-2xl mx-auto px-6 md:px-[29px] py-16">
-        <h1 className="font-hero italic text-3xl sm:text-4xl md:text-5xl mb-4 text-center" style={{ color: '#F2760E' }}>
+        <h1 className="font-hero italic text-3xl sm:text-4xl md:text-5xl mb-4 text-center sm:whitespace-nowrap" style={{ color: '#F2760E' }}>
           Il Monferrato<br className="sm:hidden" /> a carte scoperte
         </h1>
-        <p className="text-neutral-500 max-w-lg mx-auto text-justify [text-justify:inter-word] hyphens-auto">
+        <p className="text-neutral-500 text-justify [text-justify:inter-word] hyphens-auto">
           Gira le carte e scopri i tesori nascosti di un territorio unico con una raccolta di racconti brevi e curiosi.
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-6 pb-24 flex flex-wrap justify-center gap-10">
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-24 flex flex-wrap justify-center gap-10">
         {CARDS.map((card, i) => (
           <FlipCard
             key={card.title}

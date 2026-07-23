@@ -17,7 +17,7 @@ export default function DesktopMapSection() {
   if (!isDesktop) return null
 
   return (
-    <section id="mappa" className="relative w-full bg-[#14110f]" style={{ minHeight: 'var(--app-height, 100dvh)' }}>
+    <section id="mappa" className="relative w-full min-h-screen bg-[#14110f]">
       <MapMonferrato />
     </section>
   )
