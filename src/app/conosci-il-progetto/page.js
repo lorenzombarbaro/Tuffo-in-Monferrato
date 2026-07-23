@@ -28,12 +28,11 @@ export default function ConosciIlProgetto() {
             <br /><br />
             Chi è monferrino per nascita o per vocazione conosce bene il
             valore di questa terra: i paesaggi sconfinati, il buon vino e le passeggiate tra i vicoli dei
-            nostri borghi ci fanno sentire vivi. Per questo abbiamo deciso di studiare le nuove possibilità
-            digitali e offrirvi un nuovo modo di esplorare il Monferrato.
+            nostri borghi ci fanno sentire vivi. Così abbiamo deciso di sfruttare le nuove possibilità
+            digitali per offrirvi un nuovo modo di esplorare il Monferrato.
             <br /><br />
             Il turismo 4.0 pensato per
-            raccontare gli scorci più veri già dal vostro schermo e conquistarvi con le foto, le visite
-            virtuali riprese con il drone ma soprattutto la mappa, il cuore pulsante del nostro progetto.
+            raccontare gli scorci più veri e conquistarvi già dallo schermo attraverso la narrazione della mappa, il cuore pulsante del nostro progetto.
           </p>
         </div>
 
@@ -41,7 +40,7 @@ export default function ConosciIlProgetto() {
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto">
           Viva e accessibile fin dal primo clic, rappresenta la nostra interpretazione del territorio.
           Raccoglie borghi, punti panoramici, attrazioni e luoghi caratteristici che potrete facilmente
-          scoprire grazie alle categorie e alla barra di ricerca con cui orientarvi per pianificare nuovi
+          scoprire grazie ai filtri e alla barra di ricerca con cui orientarvi per pianificare nuovi
           itinerari o ritrovare i vostri luoghi del cuore.
         </p>
 
@@ -51,7 +50,7 @@ export default function ConosciIlProgetto() {
           le sue tradizioni. Crediamo che la tecnologia possa valorizzare il territorio, rendendolo più
           immediato e stimolando la curiosità di chi ancora non lo conosce.
           <br /><br />
-          Se poi questo tuffo digitale vi porterà qui sulle colline, allora avremo raggiunto il nostro obiettivo.
+          Se poi questo tuffo digitale vi porterà qui sulle colline, avremo raggiunto il nostro vero obiettivo.
         </p>
 
         <h2 className="font-hero italic text-2xl mt-12 mb-6" style={{ color: '#F2760E' }}>La squadra</h2>
@@ -70,10 +69,9 @@ export default function ConosciIlProgetto() {
 
         <h2 className="font-hero italic text-2xl mt-12 mb-3" style={{ color: '#F2760E' }}>Sostieni il progetto</h2>
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto mb-6">
-          &ldquo;Tuffo in Monferrato&rdquo; nasce come iniziativa a costo zero.
-          Senza l&apos;impiego di capitali, siamo riusciti a creare una piattaforma grazie agli strumenti di ultima generazione.
-          Tuttavia la gestione dei dati, la ricerca e lo sviluppo di nuovi contenuti richiedono uno sforzo fisico ed economico.
-          Se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti questa missione, ogni contributo è prezioso.
+          &ldquo;Tuffo in Monferrato&rdquo; nasce come iniziativa a costo zero. Grazie agli strumenti di ultima generazione siamo riusciti a creare una piattaforma senza l&apos uso di capitali,
+	tuttavia la gestione dei dati, la ricerca e lo sviluppo dei nuovi contenuti richiedono uno sforzo fisico ed economico considerevole.
+          Se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti quest&apos iniziativa, ogni contributo è prezioso.
         </p>
         <div className="text-center">
           <a href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00" target="_blank" rel="noopener noreferrer"
