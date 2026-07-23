@@ -59,9 +59,9 @@ export default function CarteScoperte() {
         <UserMenu />
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 py-16">
-        <h1 className="font-hero italic text-3xl sm:text-4xl md:text-5xl mb-4 text-center whitespace-nowrap" style={{ color: '#F2760E' }}>
-          Il Monferrato a carte scoperte
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] py-16">
+        <h1 className="font-hero italic text-3xl sm:text-4xl md:text-5xl mb-4 text-center" style={{ color: '#F2760E' }}>
+          Il Monferrato<br className="sm:hidden" /> a carte scoperte
         </h1>
         <p className="text-neutral-500 max-w-lg mx-auto text-justify [text-justify:inter-word] hyphens-auto">
           Gira le carte e scopri i tesori nascosti di un territorio unico con una raccolta di racconti brevi e curiosi.
