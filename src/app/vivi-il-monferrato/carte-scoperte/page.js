@@ -23,7 +23,7 @@ const CARDS = [
   {
     title: 'I confini del Monferrato',
     summary: 'Una cavalcata inarrestabile, un mattone per ferro di cavallo e un territorio senza confini da conquistare, così la leggenda di Aleramo dà vita alle storie sui confini del Monferrato.',
-    fullTitle: 'I confini del Monferrato: l\'enigma di una terra impossibile da intrappolare sulle mappe',
+    fullTitle: 'I confini del Monferrato: l\'enigma di una terra impossibile da disegnare',
     paragraphs: [
       'Provate a prendere una mappa del Piemonte e a tracciare i confini esatti del Monferrato. Un\'impresa quasi impossibile! A differenza di altre regioni storiche delimitate da grandi fiumi o vette insuperabili, il Monferrato è un territorio sfuggente, nato dalla storia più che dalla geografia.',
       'La leggenda racconta che il marchese Aleramo ottenne queste terre cavalcando per tre giorni e tre notti senza sosta, tracciando il suo percorso con un mattone ("mun" in dialetto) usato come ferro per il cavallo ("ferrat"). Da qui il nome!',

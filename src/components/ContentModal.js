@@ -6,7 +6,7 @@ export default function ContentModal({ title, paragraphs, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center px-6 py-10"
-      style={{ background: 'rgba(20,15,10,0.75)' }}
+      style={{ background: 'rgba(20,15,10,0.85)' }}
       onClick={onClose}
     >
       <button
