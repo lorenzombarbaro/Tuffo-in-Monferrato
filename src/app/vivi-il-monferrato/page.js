@@ -9,11 +9,8 @@ import { SquareLock } from '@/components/icons/LockIcons'
 import { supabase } from '@/lib/supabaseClient'
 
 const SECTIONS = [
-  { title: 'Eventi', desc: 'Partecipa agli appuntamenti del territorio per sentirti un vero monferrino.' },
-  { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di storie da scoprire.' },
-  // nascosti per ora, non ancora pronti:
-  // { title: 'Dove dormire', desc: 'Agriturismi e B&B che consigliamo.' },
-  // { title: 'Dove mangiare', desc: 'Ristoranti e trattorie del territorio.' },
+  { title: 'Eventi', desc: 'Sagre, mercati e appuntamenti nel territorio.', href: null },
+  { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di luoghi e storie da scoprire.', href: '/vivi-il-monferrato/carte-scoperte' },
 ]
 
 export default function ViviIlMonferrato() {
@@ -25,8 +22,8 @@ export default function ViviIlMonferrato() {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  function handleCellClick() {
-    if (!session) window.dispatchEvent(new CustomEvent('open-user-menu'))
+  function handleLockedClick() {
+    window.dispatchEvent(new CustomEvent('open-user-menu'))
   }
 
   return (
@@ -44,26 +41,33 @@ export default function ViviIlMonferrato() {
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
-          Eventi e contenuti scelti per darti un assaggio di autenticità.
+          Eventi e contenuti curati, scelti da chi il Monferrato lo vive ogni giorno.
         </p>
       </div>
 
       <div className="max-w-md mx-auto px-6 pb-24 flex flex-col gap-4">
-        {SECTIONS.map((s) => (
-          <button
-            key={s.title}
-            onClick={handleCellClick}
-            className="relative text-left bg-white rounded-lg border border-black/5 p-6 hover:border-black/10 transition-colors"
-          >
-            {!session && (
-              <span className="absolute top-4 right-4">
-                <SquareLock size={16} color="#F2760E" strokeWidth={2} />
-              </span>
-            )}
-            <h2 className="font-semibold text-neutral-800 mb-2">{s.title}</h2>
-            <p className="text-sm text-neutral-500">{s.desc}</p>
-          </button>
-        ))}
+        {SECTIONS.map((s) => {
+          const cellContent = (
+            <div className="relative bg-white rounded-lg border border-black/5 p-6 hover:border-black/10 transition-colors">
+              {!session && (
+                <span className="absolute top-4 right-4">
+                  <SquareLock size={16} color="#F2760E" strokeWidth={2} />
+                </span>
+              )}
+              <h2 className="font-semibold text-neutral-800 mb-2">{s.title}</h2>
+              <p className="text-sm text-neutral-500">{s.desc}</p>
+            </div>
+          )
+
+          if (session && s.href) {
+            return <Link key={s.title} href={s.href}>{cellContent}</Link>
+          }
+          return (
+            <button key={s.title} onClick={handleLockedClick} className="text-left">
+              {cellContent}
+            </button>
+          )
+        })}
       </div>
     </main>
   )

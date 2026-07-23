@@ -26,7 +26,7 @@ export default function Contatti() {
           Hai una domanda, una curiosità o vuoi collaborare con noi? Scrivici.
           <br />
           <a href="mailto:tuffoinmonferrato@gmail.com" className="font-semibold text-neutral-800">
-            tuffoinmonferrato@gmail.com
+            Tuffoinmonferrato@gmail.com
           </a>
         </p>
 
@@ -34,7 +34,7 @@ export default function Contatti() {
           Segnalazioni
         </h2>
         <p className="text-neutral-600 leading-relaxed text-justify [text-justify:inter-word] hyphens-auto mb-8">
-          Se sulla mappa non hai trovato quello che cercavi, indica il tuo suggerimento nella casella sottostante.
+          Se sulla mappa non hai trovato quello che cercavi, invia il tuo suggerimento inserendolo nella casella sottostante.
         </p>
 
         <ContactForm />
