@@ -49,7 +49,7 @@ export default function CarteScoperte() {
 
   return (
     <main className="min-h-screen bg-white">
-      <header className="px-6 py-5 border-b border-black/5 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-white px-6 py-5 border-b border-black/5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
             <House size={19} strokeWidth={2} color="#404040" />
@@ -59,11 +59,11 @@ export default function CarteScoperte() {
         <UserMenu />
       </header>
 
-      <div className="w-full px-6 md:px-[29px] py-16 flex flex-col items-center text-center">
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] py-16 text-center">
         <h1 className="font-hero italic text-3xl sm:text-4xl md:text-5xl mb-4 sm:whitespace-nowrap" style={{ color: '#F2760E' }}>
           Il Monferrato<br className="sm:hidden" /> a carte scoperte
         </h1>
-        <p className="text-neutral-500 max-w-2xl text-justify [text-justify:inter-word] hyphens-auto">
+        <p className="text-neutral-500 text-justify [text-justify:inter-word] hyphens-auto">
           Gira le carte e scopri i tesori nascosti di un territorio unico con una raccolta di racconti brevi e curiosi.
         </p>
       </div>

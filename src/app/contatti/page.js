@@ -7,7 +7,7 @@ import ContactForm from '@/components/ContactForm'
 export default function Contatti() {
   return (
     <main className="min-h-screen bg-white">
-      <header className="px-6 py-5 border-b border-black/5 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-white px-6 py-5 border-b border-black/5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
             <House size={19} strokeWidth={2} color="#404040" />

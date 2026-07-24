@@ -6,7 +6,7 @@ import UserMenu from '@/components/UserMenu'
 export default function ConosciIlProgetto() {
   return (
     <main className="min-h-screen bg-white">
-      <header className="px-6 py-5 border-b border-black/5 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-white px-6 py-5 border-b border-black/5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="inline-flex items-center justify-center w-9 h-9 rounded-full hover:bg-black/5 transition-colors">
             <House size={19} strokeWidth={2} color="#404040" />
@@ -74,7 +74,7 @@ export default function ConosciIlProgetto() {
           Quindi se anche tu credi che il Monferrato meriti visibilità, aiutaci a portare avanti questa idea. Ogni contributo è prezioso!
         </p>
         <div className="text-center">
-          <a href="https://donate.stripe.com/28E4gA16gbSSfZl24S1ck00" target="_blank" rel="noopener noreferrer"
+          <a href="https://donate.stripe.com/eVqfZidT23mmdRd24S1ck01" target="_blank" rel="noopener noreferrer"
             className="inline-block bg-[#F2760E] text-white text-sm font-medium px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
             Sostieni Tuffo in Monferrato con una donazione
           </a>
