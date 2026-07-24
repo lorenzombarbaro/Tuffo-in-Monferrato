@@ -459,7 +459,7 @@ export default function MapMonferrato() {
         </div>
       </div>
 
-      <div className="flex md:hidden justify-evenly gap-2 absolute left-3 right-3 top-[70px] z-20">
+      <div className="flex md:hidden justify-evenly gap-2 fixed left-3 right-3 top-[70px] z-20">
         {Object.entries(CATEGORY_LABEL).map(([cat, label]) => {
           const Icon = CATEGORY_ICON[cat]
           const active = activeCats.has(cat)
