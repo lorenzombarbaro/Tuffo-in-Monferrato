@@ -30,19 +30,19 @@ export default function StatsModule() {
     load()
   }, [])
 
-  const totalPoi = stats.length
-  const totalClicks = stats.reduce((sum, s) => sum + (s.total_clicks || 0), 0)
-  const clicks30d = stats.reduce((sum, s) => sum + (s.clicks_last_30d || 0), 0)
-
-  const summary = loading
-    ? 'Caricamento...'
-    : `${totalPoi} POI · ${totalClicks} click totali · ${clicks30d} negli ultimi 30 giorni`
-
   const filtered = stats.filter((s) => {
     const matchCat = categoryFilter === 'all' || s.category_id === categoryFilter
     const matchSearch = s.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
     return matchCat && matchSearch
   })
+
+  const totalPoi = filtered.length
+  const totalClicks = filtered.reduce((sum, s) => sum + (s.total_clicks || 0), 0)
+  const clicks30d = filtered.reduce((sum, s) => sum + (s.clicks_last_30d || 0), 0)
+
+  const summary = loading
+    ? 'Caricamento...'
+    : `${totalPoi} POI · ${totalClicks} click totali · ${clicks30d} negli ultimi 30 giorni`
 
   const compareA = stats.find((s) => s.id === compareAId)
   const compareB = stats.find((s) => s.id === compareBId)

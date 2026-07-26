@@ -120,7 +120,12 @@ export default function PoiEditorModule() {
   return (
     <ModuleCard
       title="✏️ Modifica punti di interesse"
-      summary={`${pois.length} POI nel database — clicca per modificarne uno`}
+      summary={`${
+        pois
+          .filter((p) => categoryFilter === 'all' || p.category_id === categoryFilter)
+          .filter((p) => p.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+          .length
+      } POI visualizzati — clicca per modificarne uno`}
     >
       <div className="grid md:grid-cols-[220px_1fr] gap-6">
         <div className="max-h-[500px] overflow-y-auto md:border-r border-black/5 pr-3">
