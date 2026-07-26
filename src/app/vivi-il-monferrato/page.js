@@ -41,7 +41,7 @@ export default function ViviIlMonferrato() {
       <div className="max-w-3xl mx-auto px-6 py-16 text-center">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
         <p className="text-neutral-500 max-w-lg mx-auto">
-          Eventi e contenuti curati, scelti da chi il Monferrato lo vive ogni giorno.
+          Una selezione di eventi e contenuti curati da chi il Monferrato lo vive ogni giorno.
         </p>
       </div>
 
