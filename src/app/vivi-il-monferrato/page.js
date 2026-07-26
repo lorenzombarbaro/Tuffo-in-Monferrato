@@ -38,9 +38,11 @@ export default function ViviIlMonferrato() {
         <UserMenu />
       </header>
 
-      <div className="max-w-3xl mx-auto px-6 py-16 text-center">
+      <div className="w-full text-center pt-16">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
-        <p className="text-neutral-500 max-w-lg mx-auto">
+      </div>
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-16">
+        <p className="text-neutral-500">
           Una selezione di eventi e contenuti curati da chi il Monferrato lo vive ogni giorno.
         </p>
       </div>
