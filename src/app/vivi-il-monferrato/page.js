@@ -41,13 +41,13 @@ export default function ViviIlMonferrato() {
       <div className="w-full text-center pt-16">
         <h1 className="font-hero italic text-4xl md:text-5xl mb-4" style={{ color: '#F2760E' }}>Vivi il Monferrato</h1>
       </div>
-      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-16">
-        <p className="text-neutral-500">
+      <div className="max-w-md mx-auto px-6 pb-16">
+        <p className="text-neutral-500 text-left">
           Una selezione di eventi e contenuti curati da chi il Monferrato lo vive ogni giorno.
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-24 flex flex-col gap-4">
+      <div className="max-w-md mx-auto px-6 pb-24 flex flex-col gap-4">
         {SECTIONS.map((s) => {
           const cellContent = (
             <div className="relative bg-white rounded-lg border border-black/5 p-6 hover:border-black/10 transition-colors">
