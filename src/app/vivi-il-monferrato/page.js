@@ -47,7 +47,7 @@ export default function ViviIlMonferrato() {
         </p>
       </div>
 
-      <div className="max-w-md mx-auto px-6 pb-24 flex flex-col gap-4">
+      <div className="max-w-2xl mx-auto px-6 md:px-[29px] pb-24 flex flex-col gap-4">
         {SECTIONS.map((s) => {
           const cellContent = (
             <div className="relative bg-white rounded-lg border border-black/5 p-6 hover:border-black/10 transition-colors">
