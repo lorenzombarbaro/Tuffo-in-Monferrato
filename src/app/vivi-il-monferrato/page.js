@@ -9,7 +9,7 @@ import { SquareLock } from '@/components/icons/LockIcons'
 import { supabase } from '@/lib/supabaseClient'
 
 const SECTIONS = [
-  { title: 'Eventi', desc: 'Partecipa agli eventi del territorio come un vero monferrino.', href: null },
+  { title: 'Eventi', desc: 'Partecipa agli eventi del territorio come un vero monferrino.', href: '/vivi-il-monferrato/eventi' },
   { title: 'Il Monferrato a carte scoperte', desc: 'Una selezione curiosa di storie da scoprire.', href: '/vivi-il-monferrato/carte-scoperte' },
 ]
 
