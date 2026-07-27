@@ -94,6 +94,10 @@ export default function PoiEditorModule() {
     setUploading(false)
   }
 
+  function handleRemovePhoto() {
+    setForm((prev) => ({ ...prev, cover_image_url: null }))
+  }
+
   async function handleSave() {
     setSaving(true)
     setMessage(null)
@@ -207,12 +211,25 @@ export default function PoiEditorModule() {
               <div>
                 <label className="block text-xs text-neutral-500 mb-1">Foto del popup</label>
                 <div className="flex items-center gap-3">
-                  {form.cover_image_url && (
+                  {form.cover_image_url ? (
                     <img src={form.cover_image_url} alt="" className="w-16 h-16 object-cover rounded-md border border-black/10" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-md border border-black/10 bg-neutral-100 flex items-center justify-center text-[10px] text-neutral-400 text-center px-1">
+                      foto in arrivo
+                    </div>
                   )}
                   <input type="file" accept="image/*" onChange={handlePhotoUpload} className="text-sm" />
                 </div>
                 {uploading && <p className="text-xs text-neutral-400 mt-1">Caricamento in corso...</p>}
+                {form.cover_image_url && (
+                  <button
+                    type="button"
+                    onClick={handleRemovePhoto}
+                    className="text-xs text-red-600 hover:underline mt-1.5"
+                  >
+                    Rimuovi foto
+                  </button>
+                )}
               </div>
 
               <div>
