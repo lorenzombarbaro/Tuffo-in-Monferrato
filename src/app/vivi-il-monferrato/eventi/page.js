@@ -54,6 +54,14 @@ export default function EventiPage() {
     })
   }, [events, search, dateFrom, dateTo])
 
+  // Verifichiamo se ci sono categorie che hanno almeno un evento visibile
+  const visibleCategories = useMemo(() => {
+    return CATEGORIES.map((cat) => {
+      const catEvents = filtered.filter((e) => e.category_key === cat.key)
+      return { ...cat, events: catEvents }
+    }).filter((cat) => cat.events.length > 0)
+  }, [filtered])
+
   return (
     <main className="min-h-screen bg-white">
       <header className="sticky top-0 z-30 bg-white px-6 py-5 border-b border-black/5 flex items-center justify-between">
@@ -66,7 +74,7 @@ export default function EventiPage() {
         <UserMenu />
       </header>
 
-      {/* Barra centrata */}
+      {/* Barra filtri centrata */}
       <div className="sticky top-[68px] z-20 bg-white/90 backdrop-blur-md border-b border-black/5 px-6 py-3 flex justify-center">
         <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-3xl">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
@@ -103,24 +111,26 @@ export default function EventiPage() {
         </div>
       </div>
 
-      <div className="py-8 space-y-4">
+      <div className="py-8">
         {loading ? (
           <p className="text-center text-sm text-neutral-400 py-16">Caricamento eventi...</p>
+        ) : visibleCategories.length > 0 ? (
+          visibleCategories.map((cat) => (
+            <div key={cat.key} className="mb-10">
+              <EventsRow
+                label={<span className="text-[#F2760E] font-semibold">{cat.label}</span>}
+                events={cat.events}
+                onOpen={setOpenEvent}
+              />
+            </div>
+          ))
         ) : (
-          CATEGORIES.map((cat) => {
-            const categoryEvents = filtered.filter((e) => e.category_key === cat.key)
-            const isEmpty = categoryEvents.length === 0
-
-            return (
-              <div key={cat.key} className={isEmpty ? 'pb-8' : ''}>
-                <EventsRow
-                  label={cat.label}
-                  events={categoryEvents}
-                  onOpen={setOpenEvent}
-                />
-              </div>
-            )
-          })
+          /* Messaggio mostrato solo se NESSUNA categoria ha eventi */
+          <div className="text-center py-16 px-6">
+            <p className="text-sm text-neutral-500 max-w-md mx-auto">
+              Al momento non sono previsti eventi nei pressi del Monferrato, prova a espandere i tuoi orizzonti.
+            </p>
+          </div>
         )}
       </div>
 
