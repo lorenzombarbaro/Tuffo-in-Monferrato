@@ -11,10 +11,9 @@ const ACCENT = '#F2760E'
 
 const CATEGORIES = [
   { key: 'stanco-silenzio', label: "Quando il silenzio delle colline inizia a stancarti un po'." },
-  { key: 'rinvia-dieta', label: 'Se non ti senti pronto e vuoi rinviare la dieta al lunedì.' },
+  { key: 'rinvia-dieta', label: 'Se non ti senti pronto e vuoi rinviare la dieta a lunedì.' },
   { key: 'uscita-coppia', label: "Quando l'alternativa migliore ti sembra rinviare la vostra uscita di coppia." },
-  { key: 'guida-qualcun-altro', label: "Se chiedi a qualcun'altro di guidare al posto tuo." },
-  { key: 'scarponi-nuovi', label: 'Se non hai ancora avuto occasione di usare i tuoi scarponi nuovi.' },
+  { key: 'scarponi-nuovi', label: "Se non hai ancora avuto l'occasione di provare i tuoi scarponi nuovi." },
 ]
 
 const EMPTY_FORM = {
