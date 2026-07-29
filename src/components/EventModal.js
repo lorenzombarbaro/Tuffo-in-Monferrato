@@ -41,7 +41,7 @@ export default function EventModal({ event, onClose }) {
           <p className="text-xs text-neutral-400 mb-4">{formatEventDate(event)}</p>
           <p className="text-neutral-600 leading-relaxed mb-6">{event.description}</p>
           {directionsUrl && (
-            
+            <a
               href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
